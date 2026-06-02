@@ -1,0 +1,497 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mkdjr/hayagriva/refs/heads/main/hayagriva.schema.json
+
+yoctoproject:
+  type: reference
+  title: Yocto Project Documentation
+  author: The Yocto Project®
+  url:
+    value: "https://docs.yoctoproject.org/"
+    date: 2026-04-21
+
+debian:
+  type: reference
+  title: Debian Reference
+  author: The Debian Project
+  url:
+    value: https://www.debian.org/doc/manuals/debian-reference/
+    date: 2026-04-21
+
+grype-in-production:
+  type: book
+  url:
+    value: "https://books.google.com/books/about/Grype_in_Production.html?hl=fr&id=LJ_KEQAAQBAJ"
+    date: 2026-04-21
+  title: Grype in Production
+  publisher: NobleTrex Press
+  date: 2026-03
+  author: Trex Team
+  serial-number:
+    asin: B0GT91BFNV
+    isbn: '6610001189204'
+
+sbom-cve-check:
+  type: repository
+  title: sbom-cve-check
+  author: bootlin
+  url:
+    value: "https://github.com/bootlin/sbom-cve-check/"
+    date: 2026-04-21
+
+seapath:
+  type: web
+  title: SEAPATH
+  author: LF Energy
+  url:
+    value: "https://lfenergy.org/projects/seapath/"
+    date: 2026-04-21
+
+sbom-study:
+  type: misc
+  title: A Landscape Study of Open Source and Proprietary Tools for Software Bill of Materials (SBOM)
+  author:
+  - Mirakhorli, Mehdi
+  - Garcia, Derek
+  - Dillon, Schuyler
+  - Laporte, Kevin
+  - Morrison, Matthew
+  - Lu, Henry
+  - Koscinski, Viktoria
+  - Enoch, Christopher
+  date: 2024
+  url: https://arxiv.org/abs/2402.11151
+  serial-number:
+    arxiv: '2402.11151'
+
+jenkins:
+  type: article
+  title: 'Continuous Delivery with Jenkins: Jenkins Solutions to Implement Continuous Delivery'
+  author: Armenise, Valentina
+  date: 2015
+  page-range: 24-27
+  serial-number:
+    doi: 10.1109/RELENG.2015.19
+  parent:
+    type: proceedings
+    title: 2015 IEEE/ACM 3rd International Workshop on Release Engineering
+    serial-number:
+      doi: 10.1109/RELENG36634.2015
+
+github-actions:
+  type: book
+  title: 'Hands-on GitHub Actions: Implement CI/CD with GitHub Action Workflows for Your Applications'
+  publisher:
+    name: Apress
+    location: Berkeley, CA
+  author:
+  - Chandrasekara, Chaminda
+  - Herath, Pushpa
+  date: 2021
+  page-total: 162
+  url: https://doi.org/10.1007/978-1-4842-6464-5_1
+  serial-number:
+    doi: 10.1007/978-1-4842-6464-5
+    isbn: 978-1-4842-6464-5
+  abstract: GitHub is the most widely embraced repository platform for software developers and open source communities. Large enterprises and individual developers use the GitHub platform to keep versioned source code. GitHub can be integrated with Azure Pipelines and other CI/CD (continuous integration and continuous deployment) tools to provide software delivery automation. Instead of using third-party integrations for GitHub repositories, you can now use GitHub Actions as workflows to implement CI/CD pipelines.
+
+vulnscout:
+  type: post
+  title: "VulnScout: The Easy-to-Use Tool for Securing Embedded Systems and Staying Compliant"
+  date: 2025-10-01
+  parent:
+    type: blog
+    title: Savoir-faire Linux
+    url:
+      value: https://savoirfairelinux.com
+      date: 2026-04-23
+  url:
+    value: https://blog.savoirfairelinux.com/en-ca/2025/vulnscout-the-easy-to-use-tool-for-securing-embedded-systems-and-staying-compliant/
+    date: 2026-04-23
+
+vulnscout-ew:
+  type: proceedings
+  date: 2025-04
+  title: "Cybersécurité : Savoir-faire Linux a annoncé à Embedded World 2025 la sortie en Open Source de VulnScout.io"
+  author: Savoir-faire Linux
+  url:
+    value: https://www.images-et-reseaux.com/voy_content/uploads/2025/04/sfl-vulnscout_io-pr-20250311_fr-2.pdf
+    date: 2026-06-02
+
+syft:
+  type: repository
+  title: Syft
+  author: Anchore
+  url:
+    value: https://github.com/anchore/syft
+    date: 2026-04-23
+
+sdes-2025:
+  type: report
+  title: Chiffres clés des énergies renouvelables
+  author: SDES
+  organization: Statistique publique de l'énergie, des transports, du logement et de l'environnement
+  edition: 2025
+  date: 2025
+  url:
+    value: https://www.statistiques.developpement-durable.gouv.fr/edition-numerique/chiffres-cles-energies-renouvelables/fr/
+    date: 2026-05-13
+  serial-number:
+    issn: 2557-8138
+
+jami:
+  type: web
+  title: Jami
+  organization: Savoir-faire Linux
+  url:
+    value: https://jami.net/
+    date: 2026-05-18
+
+git:
+  type: article
+  title: Git
+  author: Spinellis, Diomidis
+  date: 2012
+  page-range: 100-101
+  serial-number:
+    doi: 10.1109/MS.2012.61
+  parent:
+    type: periodical
+    title: IEEE Software
+    issue: 3
+    volume: 29
+
+gerrit:
+  type: article
+  title: Gerrit software code review data from Android
+  author:
+  - Mukadam, Murtuza
+  - Bird, Christian
+  - Rigby, Peter C.
+  date: 2013
+  page-range: 45-48
+  serial-number:
+    doi: 10.1109/MSR.2013.6624002
+  parent:
+    type: proceedings
+    title: 2013 10th Working Conference on Mining Software Repositories (MSR)
+    volume: 0
+
+github:
+  type: web
+  title: GitHub
+  url:
+    value: https://github.com
+    date: 2026-05-18
+
+cqfd:
+  type: repository
+  title: cqfd
+  author: Savoir-faire Linux
+  url:
+    value: https://github.com/savoirfairelinux/cqfd
+    date: 2026-05-18
+
+cukinia:
+  type: repository
+  title: Cukinia
+  author: Savoir-faire Linux
+  url:
+    value: https://github.com/savoirfairelinux/cukinia
+    date: 2026-05-18
+
+shigeru-electrical-substation:
+  type: web
+  title: Electrical substation model (side-view)
+  author: Shigeru23
+  date: 2011
+  url:
+    value: https://commons.wikimedia.org/wiki/File:Electrical_substation_model_(side-view).PNG
+    date: 2026-05-18
+
+mcdonald2007substation:
+  type: article
+  title: Substation Automation Basics - The Next Generation
+  author: McDonald, John
+  date: 2007
+  page-range: 30-36
+  parent:
+    type: periodical
+    title: Electric Energy T&D Magazine
+  url:
+    value: https://electricenergyonline.com/energy/magazine/321/article/Substation-Automation-Basics-The-Next-Generation.htm
+    date: 2026-05-22
+
+en15249362:
+  type: article
+  title: 'Towards Software-Defined Protection, Automation, and Control in Power Systems: Concepts, State of the Art, and Future Challenges'
+  author:
+  - Kabbara, Nadine
+  - Nait Belaid, Mohand Ouamer
+  - Gibescu, Madeleine
+  - Camargo, Luis Ramirez
+  - Cantenot, Jerome
+  - Coste, Thierry
+  - Audebert, Vincent
+  - Morais, Hugo
+  date: 2022
+  url: https://www.mdpi.com/1996-1073/15/24/9362
+  serial-number:
+    doi: 10.3390/en15249362
+    issn: 1996-1073
+  abstract: Nowadays, power systems’ Protection, Automation, and Control (PAC) functionalities are often deployed in different constrained devices (Intelligent Electronic Devices) following a coupled hardware/software design. However, with the increase in distributed energy resources, more customized controllers will be required. These devices have high operational and deployment costs with long development, testing, and complex upgrade cycles. Addressing these challenges requires that a ’revolution’ in power system PAC design takes place. Decoupling from hardware-dependent implementations by virtualizing the functionalities facilitates the transition from a traditional power grid into a software-defined smart grid. This article presents a survey of recent literature on software-defined PAC for power systems, covering the concepts, main academic works, industrial proof of concepts, and the latest standardization efforts in this rising area. Finally, we summarize the expected future technical, industrial, and standardization challenges and open research problems. It was observed that software-defined PAC systems have a promising potential that can be leveraged for future PAC and smart grid developments. Moreover, standardizations in virtual IED software development and deployments, configuration tools, performance benchmarking, and compliance testing using a dynamic, agile approach assuring interoperability are critical enablers.
+  parent:
+    type: periodical
+    title: Energies
+    issue: 24
+    volume: 15
+
+kivity2007kvm:
+  type: article
+  title: 'kvm: the Linux virtual machine monitor'
+  author:
+  - Kivity, Avi
+  - Kamay, Yaniv
+  - Laor, Dor
+  - Lublin, Uri
+  - Liguori, Anthony
+  date: 2007
+  page-range: 225-230
+  url:
+    value: https://www.kernel.org/doc/mirror/ols2007v1.pdf#page=225
+    date: 2026-05-18
+  parent:
+    type: proceedings
+    title: Proceedings of the Linux symposium
+    organization: Dttawa, Dntorio, Canada
+    issue: 8
+    volume: 1
+
+qemu:
+  type: web
+  title: QEMU
+  url:
+    value: https://www.qemu.org/
+    date: 2026-05-18
+
+libvirt:
+  type: article
+  title: Non-intrusive virtualization management using libvirt
+  author:
+  - Bolte, Matthias
+  - Sievers, Michael
+  - Birkenheuer, Georg
+  - Niehörster, Oliver
+  - Brinkmann, André
+  date: 2010
+  page-range: 574-579
+  serial-number:
+    doi: 10.1109/DATE.2010.5457142
+  parent:
+    type: proceedings
+    title: 2010 Design, Automation & Test in Europe Conference & Exhibition (DATE 2010)
+    volume: 0
+
+openvswitch:
+  type: article
+  title: The Design and Implementation of Open {vSwitch}
+  author:
+  - Pfaff, Ben
+  - Pettit, Justin
+  - Koponen, Teemu
+  - Jackson, Ethan
+  - Zhou, Andy
+  - Rajahalme, Jarno
+  - Gross, Jesse
+  - Wang, Alex
+  - Stringer, Joe
+  - Shelar, Pravin
+  - Amidon, Keith
+  - Casado, Martin
+  date: 2015-05
+  page-range: 117-130
+  url: https://www.usenix.org/conference/nsdi15/technical-sessions/presentation/pfaff
+  serial-number:
+    isbn: 978-1-931971-218
+  parent:
+    type: proceedings
+    title: 12th USENIX Symposium on Networked Systems Design and Implementation (NSDI 15)
+    publisher:
+      name: USENIX Association
+      location: Oakland, CA
+
+ceph:
+  type: web
+  title: Ceph
+  url:
+    value: https://ceph.com/en/
+    date: 2026-05-18
+
+pacemaker:
+  type: web
+  title: Pacemaker
+  author: ClusterLabs
+  url:
+    value: https://clusterlabs.org/projects/pacemaker/
+    date: 2026-05-18
+
+corosync:
+  type: repository
+  title: Corosync
+  url:
+    value: https://github.com/corosync/corosync
+    date: 2026-05-18
+
+linux-introduction:
+  type: book
+  title: Introduction to Linux (Third Edition)
+  author: Garrels, M.
+  date: 2010-05
+  publisher: Fultus Corporation
+  edition: 3
+  url: https://books.google.fr/books?id=z3MoAH32jzIC
+  serial-number:
+    isbn: '9781596821996'
+
+hochstein2017ansible:
+  type: book
+  title: 'Ansible: Up and Running: Automating Configuration Management and Deployment the Easy Way'
+  author:
+  - Hochstein, L.
+  - Moser, R.
+  date: 2017
+  publisher: O'Reilly Media
+  url: https://books.google.fr/books?id=h5YtDwAAQBAJ
+  serial-number:
+    isbn: '9781491979778'
+
+cra-article:
+  type: article
+  title: 'Fostering Cyber Resilience in Europe: An In-Depth Exploration of the Cyber Resilience Act'
+  author:
+  - Schmittner, Christoph
+  - Veledar, Omar
+  - Faschang, Thomas
+  - Macher, Georg
+  - Brenner, Eugen
+  date: 2024
+  editor:
+  - Yilmaz, Murat
+  - Clarke, Paul
+  - Riel, Andreas
+  - Messnarz, Richard
+  - Greiner, Christian
+  - Peisl, Thomas
+  page-range: 390-404
+  serial-number:
+    isbn: 978-3-031-71139-8
+  abstract: The proliferation of Internet of Things (IoT) devices in our hyperconnected world has undoubtedly improved efficiency and convenience but has also heightened vulnerabilities. The pervasive connectivity has exponentially increased the likelihood of data breaches and network intrusions, with cyberattacks becoming more frequent, sophisticated, and impactful. This digital transformation spans across sectors, exposing critical infrastructure to significant cyber risks with potentially catastrophic consequences. Against this backdrop, robust cybersecurity measures are imperative. The EU's Cyber Resilience Act (CRA) represents a proactive response to the evolving cyber threat landscape, aiming to enhance cybersecurity resilience and promote trust in the digital economy. This paper provides an overview of global cybersecurity regulations, delves into the specifics of the CRA, examines its integration into the existing CE marking scheme, and discusses its potential impact on innovation. By addressing multifaceted challenges posed by cyber threats, the CRA holds the promise of safeguarding digital infrastructure and fostering a resilient digital society.
+  parent:
+    type: proceedings
+    title: Systems, Software and Services Process Improvement
+    publisher:
+      name: Springer Nature Switzerland
+      location: Cham
+
+nist-nvd:
+  type: misc
+  author: Booth, Harold
+  date: 2015
+  title: National Vulnerability Database
+  organization: National Institute of Standards and Technology
+  url:
+    value: https://nvd.nist.gov/
+    date: 2026-03-11
+
+linux-vulns:
+  type: repository
+  title: vulns
+  author: Linux
+  url:
+    value: https://git.kernel.org/pub/scm/linux/security/vulns.git/
+    date: 2026-03-11
+
+cvelistv5:
+  type: repository
+  title: cvelistV5
+  author: CVEProject
+  url:
+    value: https://github.com/CVEProject/cvelistV5
+    date: 2026-03-11
+
+debian-security-tracker:
+  type: web
+  title: Security Bug Tracker
+  author: Debian
+  url:
+    value: https://security-tracker.debian.org/tracker/
+    date: 2026-05-26
+
+redhat-security-updates:
+  type: web
+  title: Security Updates
+  author: RedHat
+  url:
+    value: https://access.redhat.com/security/security-updates/
+    date: 2026-05-26
+
+yocto-cve-check:
+  type: entry
+  title: Classes - cve-check
+  parent:
+    organization: Yocto Project
+    type: reference
+    title: The Yocto Project Reference Manual
+    edition: Scarthgap
+  url:
+    value: https://docs.yoctoproject.org/scarthgap/ref-manual/classes.html#ref-classes-cve-check
+    date: 2026-03-11
+
+meta-vulnscout:
+  type: repository
+  title: meta-vulnscout
+  organization: Savoir-Faire Linux
+  url:
+    value: https://github.com/savoirfairelinux/meta-vulnscout/tree/scarthgap
+    date: 2026-03-11
+
+SEAPATH-git-yocto-bsp:
+  type: repository
+  title: yocto-bsp
+  author: SEAPATH
+  url:
+    value: https://github.com/seapath/yocto-bsp
+    date: 2026-05-28
+
+SEAPATH-git-meta-seapath:
+  type: repository
+  title: meta-seapath
+  author: SEAPATH
+  url:
+    value: https://github.com/seapath/meta-seapath
+    date: 2026-05-28
+
+SEAPATH-git-repo-manifest:
+  type: repository
+  title: repo-manifest
+  author: SEAPATH
+  url:
+    value: https://github.com/seapath/repo-manifest
+    date: 2026-05-28
+
+google-repo-git:
+  type: repository
+  title: git-repo
+  author: Google
+  url:
+    value: https://gerrit.googlesource.com/git-repo/
+    date: 2026-05-28
+
+gh-actions-reuse-workflows:
+  type: entry
+  title: Reuse workflows - GitHub Actions Docs
+  author: GitHub
+  parent:
+    type: reference
+    title: GitHub Docs
+  url:
+    value: https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows
+    date: 2026-06-02
