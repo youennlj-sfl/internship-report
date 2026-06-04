@@ -169,6 +169,7 @@
   insa-tutor-suffix: "e",
   insa: "rennes",
   lang: "fr",
+  omit-outline: true,
   doc,
 )
 #show link: it => {
@@ -191,9 +192,15 @@
 )
 
 #show raw.where(block: false): box.with(fill: black.transparentize(95%), outset: (x: 2pt, y: 3pt), radius: 4pt)
-
 #set raw(syntaxes: ("../BitBake.sublime-syntax",))
 
+#insa-hide-page-counter()
+#heading(numbering: none, outlined: false)[Remerciements]
+
+#pagebreak()
+#outline()
+
+#insa-show-page-counter(current-page: 1)
 #include "intro.typ"
 
 #pagebreak()
@@ -215,6 +222,7 @@ TODO
 #pagebreak()
 #set heading(numbering: none)
 = Glossaire
+#insa-hide-page-counter()
 #print-glossary(
   entry-list,
   entry-sortkey: x => lower(x.key),
@@ -227,7 +235,7 @@ TODO
 #set heading(numbering: none)
 
 = Annexes
-#set heading(numbering: (..nums) => nums.at(1), supplement: [Annexe])
+#set heading(numbering: (..nums) => nums.at(1), supplement: [Annexe], outlined: false)
 #show heading: it => block(sticky: true)[
   Annexe #counter(heading).display() - #it.body
 ]

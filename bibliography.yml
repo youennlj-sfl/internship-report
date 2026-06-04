@@ -519,3 +519,11 @@ dependencytrack:
   url:
     value: https://dependencytrack.org/
     date: 2026-04-22
+
+fai-project-homepage:
+  type: web
+  title: FAI - Fully Automatic Installation
+  author: Thomas Lange
+  url:
+    value: https://fai-project.org/
+    date: 2026-06-04
