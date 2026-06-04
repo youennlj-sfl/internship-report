@@ -231,6 +231,11 @@ TODO
 #show heading: it => block(sticky: true)[
   Annexe #counter(heading).display() - #it.body
 ]
+
+== Planning
+*TODO*
+
+#pagebreak()
 == Rapport de comparaison des solutions de détection de vulnérabilité <annex:cve-comparison-report>
 Le rapport complet est attaché en pièce jointe à ce PDF.
 #pdf.attach(
@@ -240,12 +245,15 @@ Le rapport complet est attaché en pièce jointe à ce PDF.
 )
 
 #for i in range(1, 5) {
-  image("../assets/Yocto CVE check report.pdf", page: i, height: 1fr)
+  block(stroke: 1pt, image("../assets/Yocto CVE check report.pdf", page: i), height: 1fr)
+  pagebreak()
+}
+
+== Raport de comparaison entre VulnScout et Dependency-Track <annex:vulnscout-dependency-track>
+#for i in range(1, 11 + 1) {
+  block(stroke: 1pt, image("../assets/VulnScout DependencyTrack comparison.pdf", page: i), height: 1fr)
   pagebreak()
 }
 
 == Rapport de vulnérabilités généré en CI <annex:vulnscout-report-summary>
-#image("../assets/vulnscout-report-summary.pdf", height: 1fr)
-
-== Planning
-*TODO*
+#block(stroke: 1pt, image("../assets/vulnscout-report-summary.pdf"), height: 1fr)

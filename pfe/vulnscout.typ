@@ -1,10 +1,24 @@
 #import "@preview/subpar:0.2.2"
 #import "@preview/zebraw:0.6.3": zebraw
+#import "@preview/meander:0.4.2"
 
 = VulnScout <chapter:vulnscout>
-VulnScout @vulnscout un outil de scan et d'évaluation de vulnérabilités basé sur les @SBOM:pl, conçu pour être convivial pour les développeurs et simple à intégrer avec Yocto, Buildroot (un autre outil de génération d'images Linux embarquées) et avec la plupart des systèmes générant des SBOMs var il prend en charge tous les formats standards (SPDX, CycloneDX, OpenVEX). Il a été conçu pour être très facile à mettre en place avec le minimum de configuration nécessaire. Il comble ainsi le fossé entre les outils de cybersécurité, souvent complexes et difficiles à mettre en place, et le développement logiciel au quotidien, notamment dans les projets comportant des dizaines voire des centaines de dépendances open source.
+#meander.reflow({
+  import meander: *
 
-Concrètement, VulnScout est une application Web hébergée localement : son backend est écrit en Python avec le framework Flask, tandis que le frontend est en TypeScript avec le framework React. #highlight[REFS] Le développement de VulnScout a commencé en mai 2024 dans le cadre du stage de fin d'études de Louis Maillard, un étudiant de l'INSA Centre Val de Loire. Il a ensuite été annoncé officiellement à Embedded World 2025 @vulnscout-ew. Il est depuis disponible en open source mais est toujours en bêta. Une équipe dédiée de Savoir-faire Linux Montréal travaille dessus.
+  /*placed(top + right, boundary: contour.margin(15pt), figure(
+    image("../assets/vulnscout.jpg", width: 5cm),
+    caption: [Logo de VulnScout],
+  ))*/
+
+  container()
+
+  content[
+    #h(1em) VulnScout @vulnscout un outil de scan et d'évaluation de vulnérabilités basé sur les @SBOM:pl, conçu pour être convivial pour les développeurs et simple à intégrer avec Yocto, Buildroot (un autre outil de génération d'images Linux embarquées) et avec la plupart des systèmes générant des SBOMs var il prend en charge tous les formats standards (SPDX, CycloneDX, OpenVEX). Il a été conçu pour être très facile à mettre en place avec le minimum de configuration nécessaire. Il comble ainsi le fossé entre les outils de cybersécurité, souvent complexes et difficiles à mettre en place, et le développement logiciel au quotidien, notamment dans les projets comportant des dizaines voire des centaines de dépendances open source.
+  ]
+})
+
+Concrètement, VulnScout est une application Web hébergée localement : son backend est écrit en Python avec le framework Flask @flask-manual, tandis que le frontend est en TypeScript avec le framework React @react-repo. Le développement de VulnScout a commencé en mai 2024 dans le cadre du stage de fin d'études de Louis Maillard, un étudiant de l'INSA Centre Val de Loire. Il a ensuite été annoncé officiellement à Embedded World 2025 @vulnscout-ew. Il est depuis disponible en open source mais est toujours en bêta. Une équipe dédiée de Savoir-faire Linux Montréal travaille dessus.
 
 Savoir-faire Linux développe également un projet connexe, _meta-vulnscout_ @meta-vulnscout. Comme expliqué dans le @chapter:yocto:sota:nosbom, il s'agit d'un _layer_ Yocto contenant des classes améliorant les résultats de la classe `cve-check` de Yocto. Il contient également une classe permettant de directement lancer VulnScout depuis l'environnement de Yocto avec les @SBOM:pl et vulnérabilités déjà importées, sans avoir besoin de manuellement déployer VulnScout à côté et de gérer l'import des données.
 
@@ -34,7 +48,16 @@ VulnScout étant encore en bêta, il était normal d'y trouver quelques bugs ou 
 
 En effet, notre utilisation de VulnScout est légèrement différente de celle faite par les autres équipes de Savoir-faire Linux : là où eux l'utilisent directement via _meta-vulnscout_, nous paramétrons et lançons l'outil en utilisant la ligne de commande. Ainsi, nous avons pu corriger des soucis en rapport avec cette différence : par exemple, l'import des fichiers SPDX générés par SEAPATH rencontrait des problèmes de permissions.
 
-#pagebreak()
+Un autre soucis rencontré qui n'avait pas été remarqué par l'équipe de VulnScout est la fuite de données entre projets : lorsqu'une instance VulnScout contient à la fois des projets basés sur Yocto et d'autres non, les informations provenant des @SBOM:pl Yocto (par exemple pour indiquer qu'une vulnérabilité n'est pas présente car un fichier n'est pas compilé) sont visibles sur les pages de vulnérabilités des autres projets, alors que l'information ne les concerne pas. La correction de ce bug a nécessité de modifier le schéma de la base de données interne de VulnScout afin de stocker l'information fournie par Yocto dans une table contenant exactement les bonnes relations (la table `sbom_observation` au centre de la @fig:vulnscout:analysis:erd).
+
+#figure(
+  image("../assets/erd 2.png"),
+  caption: [Modèle entité-association de la base de données de VulnScout],
+) <fig:vulnscout:analysis:erd>
+
+#highlight[TODO: screenshots of before/after?]
+
+//#pagebreak()
 == Intégration Continue dans SEAPATH
 Comme évoqué au @chapter:yocto:ci:cve-check, on utilise VulnScout dans la @CI pour générer des rapports et pour émettre une erreur lorsque des vulnérabilités dépassent les seuils de sévérité. En effet, en plus de son interface graphique facile à utiliser, VulnScout propose un outil en ligne de commande pour interagir avec, que nous utilisons dans le pipeline de détection de vulnérabilités. Une version simplifiée des commandes que nous utilisons est montrée en @fig:vulnscout:ci:script.
 
@@ -68,6 +91,7 @@ Comme évoqué au @chapter:yocto:ci:cve-check, on utilise VulnScout dans la @CI 
     ),
   ),
   caption: [Script simplifié de l'exécution de VulnScout dans la @CI],
+  placement: auto,
 ) <fig:vulnscout:ci:script>
 
 Comme le seuil à partir duquel une vulnérabilité est considéré comme critique utilise la valeur de l'@EPSS, VulnScout doit récupérer ces valeurs depuis la base de données en ligne, et ce pour toutes les vulnérabilités. Cette opération peut prendre plusieurs minutes selon la quantité de vulnérabilités détectées, il est donc préférable de ne pas la faire à chaque exécution de la @CI. Pour éviter cela, on a fait en sorte de garder la base de données de VulnScout en cache pour la réutiliser entre les exécutions.
@@ -181,9 +205,11 @@ Afin de mesurer l'impact que nous avons eu sur la qualité du code, nous avons u
   caption: [Évolution des indicateurs de qualité du typage du backend au cours du stage],
 ) <fig:vulnscout:quality:typing-table>
 
-Une première chose à remarquer dans le @fig:vulnscout:quality:typing-table est que la base de code du backend a triplé, en passant d'environ 6 000 à 18 000 lignes, tandis que le nombre de fichier a plus que doublé (de 43 à 99). Malgré cela, il y a moyen de fichiers avec des erreurs de typage, et la précision et l'exhaustivité du typage ont augmenté de quelques points de pourcentages.
+Une première chose à remarquer dans le @fig:vulnscout:quality:typing-table est que la base de code du backend a triplé, en passant d'environ 6 000 à 18 000 lignes, tandis que le nombre de fichier a plus que doublé (de 43 à 99). Malgré cela, il y a moins de fichiers avec des erreurs de typage, et la précision et l'exhaustivité du typage ont augmenté de quelques points de pourcentages.
 
 Ces évolutions ne semblent pas très grandes, mais mises en relation avec le triplement du nombre de lignes de codes, cela montre l'effort mis dans la revue des @PR:pl pour que le code nouvellement intégré soit le plus correctement typé. Deplus, il y a eu très peu de temps destiné à l'amélioration pure du code existant, le nouveau code dépend donc parfois sur de l'ancien code non typé et est donc imprécis par effet boule de neige.
+
+Au final, grâce à ces améliorations, il est plus aisé et sûr d'écrire du nouveau code dans VulnScout car on peut savoir le type des variables et fonctions qu'on appelle et donc éviter des erreurs simples.
 
 /*Pyright 0.15:
 ```
@@ -224,4 +250,10 @@ Symbols without documentation:
 Type completeness score: 32.9%
 ```*/
 
-== Comparaison avec DependencyTrack
+#let DT = "Dependency-Track"
+== Comparaison avec #DT
+#DT @dependencytrack est une plate-forme d'analyse de composants logiciels permettant d'identifier les risques dans une chaîne d'approvisionnement logicielle. En pratique, elle se base sur les @SBOM:pl pour détecter les vulnérabilités présentes dans un système. C'est donc un clair concurrent de VulnScout.
+
+À plusieurs reprises, sur des salons où ils présentaient VulnScout, des membres de Savoir-faire Linux ont été questionnés sur la différence avec #DT et l'intérêt de VulnScout en comparaison. Une partie du stage a donc été consacrée à l'étude et à la comparaison en profondeur des deux outils, du déploiement initial à l'expérience d'évaluation de vulnérabilités, en passant par l'intégration avec les projets basés sur Yocto.
+
+On a ensuite écrit un rapport détaillé sur cette comparaison. On a pris soin de consigner les points faibles et forts des deux outils, afin de pouvoir en tirer une liste d'améliorations possibles pour VulnScout. De plus, on a souligné les profondes différences de philosophies, qui font que ces outils ne sont pas en réelle concurrence car ils n'ont pas les mêmes utilisateurs cibles. Le rapport a été partagé à l'équipe du projet VulnScout de Montréal. Il est prévu d'ensuite le publier en article de blogue sur le site Web de Savoir-faire Linux. Le rapport est consultable dans l'@annex:vulnscout-dependency-track.

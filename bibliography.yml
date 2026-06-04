@@ -495,3 +495,27 @@ gh-actions-reuse-workflows:
   url:
     value: https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows
     date: 2026-06-02
+
+flask-manual:
+  type: reference
+  title: Flask Documentation
+  author: Pallets
+  url:
+    value: https://flask.palletsprojects.com/en/stable/
+    date: 2026-06-03
+
+react-repo:
+  type: repository
+  title: React
+  author: Facebook
+  url:
+    value: https://github.com/facebook/react
+    date: 2026-06-03
+
+dependencytrack:
+  type: web
+  title: Dependency-Track
+  organization: The OWASP Foundation
+  url:
+    value: https://dependencytrack.org/
+    date: 2026-04-22

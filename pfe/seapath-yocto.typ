@@ -405,7 +405,7 @@ Ainsi, nous avons bifurqué vers la seconde option, qui est plus complexe car el
 
 #figure(
   [
-    #image("../assets/ci-diagram.svg", width: auto)
+    #image("../assets/ci-diagram.svg", width: auto) // TODO draw in fletcher
     #block(stroke: .5pt, inset: .5em, align(left)[
       *Légende :*
       - flèches simples : déclenchement de pipeline manuel
