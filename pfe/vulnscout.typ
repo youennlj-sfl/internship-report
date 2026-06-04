@@ -18,12 +18,12 @@
   ]
 })
 
-Concrètement, VulnScout est une application Web hébergée localement : son backend est écrit en Python avec le framework Flask @flask-manual, tandis que le frontend est en TypeScript avec le framework React @react-repo. Le développement de VulnScout a commencé en mai 2024 dans le cadre du stage de fin d'études de Louis Maillard, un étudiant de l'INSA Centre Val de Loire. Il a ensuite été annoncé officiellement à Embedded World 2025 @vulnscout-ew. Il est depuis disponible en open source mais est toujours en bêta. Une équipe dédiée de Savoir-faire Linux Montréal travaille dessus.
+Concrètement, VulnScout est une application Web hébergée localement : son backend est écrit en Python avec le framework Flask @flask-manual, tandis que le frontend est en TypeScript avec le framework React @react-repo. Le développement de VulnScout a commencé en mai 2024 dans le cadre du stage de fin d'études de Louis Maillard, un étudiant de l'INSA Centre Val de Loire. Il a ensuite été annoncé officiellement à Embedded World 2025 @vulnscout-ew. Il est depuis disponible en open source mais toujours en développement actif. Une équipe dédiée de Savoir-faire Linux Montréal travaille dessus.
 
 Savoir-faire Linux développe également un projet connexe, _meta-vulnscout_ @meta-vulnscout. Comme expliqué dans le @chapter:yocto:sota:nosbom, il s'agit d'un _layer_ Yocto contenant des classes améliorant les résultats de la classe `cve-check` de Yocto. Il contient également une classe permettant de directement lancer VulnScout depuis l'environnement de Yocto avec les @SBOM:pl et vulnérabilités déjà importées, sans avoir besoin de manuellement déployer VulnScout à côté et de gérer l'import des données.
 
 == Analyse des vulnérabilités de SEAPATH
-Avant même le début du stage, il était décidé d'utiliser VulnScout pour étudier les vulnérabilités trouvées dans SEAPATH afin de promouvoir l'outil auprès de la communauté Yocto. C'est donc pourquoi on a utilisé VulnScout lorsqu'il a fallu comparer les résultats des outils de détection au @chapter:yocto:comparison:cve-amount, ou bien lorsqu'on a étudié les vulnérabilités détectées dans SEAPATH au @chapter:yocto:cve-analysis.
+Il avait été décidé d'utiliser VulnScout pour étudier les vulnérabilités trouvées dans SEAPATH avant même le début du stage, afin de promouvoir l'outil auprès de la communauté Yocto mais aussi car c'est l'outil le plus adapté pour un projet basé sur Yocto. C'est donc pourquoi on a utilisé VulnScout lorsqu'il a fallu comparer les résultats des outils de détection au @chapter:yocto:comparison:cve-amount, ou bien lorsqu'on a étudié les vulnérabilités détectées dans SEAPATH au @chapter:yocto:cve-analysis.
 
 Nous avons principalement utilisé la page "Vulnérabilités" de l'interface graphique (voir @fig:vulnscout:seapath:vulnerabilities) : en filtrant uniquement sur les vulnérabilités en attente et en les triant par ordre de sévérité, on a pu aisément voir les détails des vulnérabilités critiques pour ensuite chercher si elles étaient applicables ou non (voir @fig:vulnscout:seapath:vuln-modal). Cela nous a beaucoup aidé : chercher directement dans les fichiers SPDX et OpenVEX était très complexe dû à leur grande verbosité.
 
@@ -48,16 +48,22 @@ VulnScout étant encore en bêta, il était normal d'y trouver quelques bugs ou 
 
 En effet, notre utilisation de VulnScout est légèrement différente de celle faite par les autres équipes de Savoir-faire Linux : là où eux l'utilisent directement via _meta-vulnscout_, nous paramétrons et lançons l'outil en utilisant la ligne de commande. Ainsi, nous avons pu corriger des soucis en rapport avec cette différence : par exemple, l'import des fichiers SPDX générés par SEAPATH rencontrait des problèmes de permissions.
 
-Un autre soucis rencontré qui n'avait pas été remarqué par l'équipe de VulnScout est la fuite de données entre projets : lorsqu'une instance VulnScout contient à la fois des projets basés sur Yocto et d'autres non, les informations provenant des @SBOM:pl Yocto (par exemple pour indiquer qu'une vulnérabilité n'est pas présente car un fichier n'est pas compilé) sont visibles sur les pages de vulnérabilités des autres projets, alors que l'information ne les concerne pas. La correction de ce bug a nécessité de modifier le schéma de la base de données interne de VulnScout afin de stocker l'information fournie par Yocto dans une table contenant exactement les bonnes relations (la table `sbom_observation` au centre de la @fig:vulnscout:analysis:erd).
+#pagebreak()
+Un autre soucis rencontré qui n'avait pas été remarqué par l'équipe de VulnScout est la fuite de données entre projets : lorsqu'une instance VulnScout contient à la fois des projets basés sur Yocto et d'autres non, les informations provenant des @SBOM:pl Yocto (par exemple pour indiquer qu'une vulnérabilité n'est pas présente car un fichier n'est pas compilé) sont visibles sur les pages de vulnérabilités des autres projets, alors que l'information ne les concerne pas. La correction de ce bug a nécessité de modifier le schéma de la base de données interne de VulnScout afin de stocker l'information fournie par Yocto dans une table contenant exactement les bonnes relations (la table `sbom_observation` au centre de la @fig:vulnscout:analysis:erd). Grâce à ce changement, les informations provenant des @SBOM:pl Yocto apparaissent sur la page des vulnérabilités seulement lorsqu'elles concernent le projet sélectionné (voir @fig:vulnscout:analysis:yocto-description).
 
 #figure(
-  image("../assets/erd 2.png"),
+  image("../assets/erd 2.png", width: 80%),
   caption: [Modèle entité-association de la base de données de VulnScout],
+  placement: auto,
 ) <fig:vulnscout:analysis:erd>
 
-#highlight[TODO: screenshots of before/after?]
+#figure(
+  image("../assets/vs_vuln_yocto_desc.png", width: 80%),
+  caption: [Page montrant une information remontée par Yocto pour le projet actuel],
+  placement: auto,
+) <fig:vulnscout:analysis:yocto-description>
 
-//#pagebreak()
+#pagebreak()
 == Intégration Continue dans SEAPATH
 Comme évoqué au @chapter:yocto:ci:cve-check, on utilise VulnScout dans la @CI pour générer des rapports et pour émettre une erreur lorsque des vulnérabilités dépassent les seuils de sévérité. En effet, en plus de son interface graphique facile à utiliser, VulnScout propose un outil en ligne de commande pour interagir avec, que nous utilisons dans le pipeline de détection de vulnérabilités. Une version simplifiée des commandes que nous utilisons est montrée en @fig:vulnscout:ci:script.
 
@@ -91,7 +97,7 @@ Comme évoqué au @chapter:yocto:ci:cve-check, on utilise VulnScout dans la @CI 
     ),
   ),
   caption: [Script simplifié de l'exécution de VulnScout dans la @CI],
-  placement: auto,
+  placement: none,
 ) <fig:vulnscout:ci:script>
 
 Comme le seuil à partir duquel une vulnérabilité est considéré comme critique utilise la valeur de l'@EPSS, VulnScout doit récupérer ces valeurs depuis la base de données en ligne, et ce pour toutes les vulnérabilités. Cette opération peut prendre plusieurs minutes selon la quantité de vulnérabilités détectées, il est donc préférable de ne pas la faire à chaque exécution de la @CI. Pour éviter cela, on a fait en sorte de garder la base de données de VulnScout en cache pour la réutiliser entre les exécutions.
@@ -171,7 +177,7 @@ Au final, grâce à ces ajouts, notre @CI peut réutiliser la base de données d
 ) <fig:vulnscout:ci:drop-scans-script>
 
 == Amélioration de la qualité du code
-Comme introduit au début du @chapter:vulnscout, VulnScout est à la base un projet développé durant un stage, puis repris par différents collaborateurs de Savoir-faire Linux. Malgré sa relative jeunesse, une certaine quantité de dette technique s'est accumulée, surtout dûe à l'utilisation de conventions de code datées et de frameworks obsolètes. De plus, l'équipe actuelle de Savoir-faire Linux Montréal travaillant sur VulnScout ne comporte pas de développeur spécialisé dans la programmation backend, particulièrement en Python. Ainsi, le nouveau code prend parfois exemple sur de l'ancien code de mauvaise qualité, ce qui ajoute à la dette technique.
+Comme introduit au début du @chapter:vulnscout, VulnScout est à la base un projet développé durant un stage, puis repris par différents collaborateurs de Savoir-faire Linux. Malgré sa relative jeunesse, une certaine quantité de dette technique s'est accumulée, surtout dûe à l'utilisation de conventions de code datées et de frameworks obsolètes. De plus, l'équipe actuelle de Savoir-faire Linux Montréal travaillant sur VulnScout doit avancer à une certaine allure pour rajouter des fonctionnalités et dispose de peu de temps pour retoucher l'ancien code.
 
 Le principal souci identifié concerne l'absence quasi complète de typage dans le backend. En effet, Python n'est pas un langage typé explicitement : on n'a pas besoin de spécifier le type de ses variables, le type des paramètres des fonctions ou bien le type de retour d'une méthode. Cela en fait un langage facile à prendre en main et rapide à écrire, mais cela a l'inconvénient de rendre l'analyse statique de code très complexe : là où le compilateur d'un langage typé statiquement comme le Java peut facilement détecter l'accès à une variable inconnue ou le passage d'un nombre dans une fonction s'attendant à une chaîne de caractère, les outils dédiés pour Python ont beaucoup de mal à faire ces mêmes analyses. Pour pallier ces problèmes, depuis la version 3.0 de Python (2008), les développeurs peuvent ajouter des annotations de type. Ce n'est pourtant toujours pas fait partout, et c'est le cas dans VulnScout.
 
