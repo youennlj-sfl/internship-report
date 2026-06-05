@@ -22,8 +22,8 @@ Concrètement, VulnScout est une application Web hébergée localement : son bac
 
 Savoir-faire Linux développe également un projet connexe, _meta-vulnscout_ @meta-vulnscout. Comme expliqué dans le @chapter:yocto:sota:nosbom, il s'agit d'un _layer_ Yocto contenant des classes améliorant les résultats de la classe `cve-check` de Yocto. Il contient également une classe permettant de directement lancer VulnScout depuis l'environnement de Yocto avec les @SBOM:pl et vulnérabilités déjà importées, sans avoir besoin de manuellement déployer VulnScout à côté et de gérer l'import des données.
 
-== Analyse des vulnérabilités de SEAPATH
-Il avait été décidé d'utiliser VulnScout pour étudier les vulnérabilités trouvées dans SEAPATH avant même le début du stage, afin de promouvoir l'outil auprès de la communauté Yocto mais aussi car c'est l'outil le plus adapté pour un projet basé sur Yocto. C'est donc pourquoi on a utilisé VulnScout lorsqu'il a fallu comparer les résultats des outils de détection au @chapter:yocto:comparison:cve-amount, ou bien lorsqu'on a étudié les vulnérabilités détectées dans SEAPATH au @chapter:yocto:cve-analysis.
+== Analyse des vulnérabilités de SEAPATH <chapter:vulnscout:seapath-analysis>
+Il avait été décidé d'utiliser VulnScout pour étudier les vulnérabilités trouvées dans SEAPATH avant même le début du stage, afin de promouvoir l'outil auprès de la communauté Yocto mais aussi car c'est l'outil le plus adapté pour un projet basé sur Yocto. C'est donc pourquoi on a utilisé VulnScout lorsqu'il a fallu comparer les résultats des outils de détection au @chapter:yocto:comparison:cve-amount, ou bien lorsqu'on a étudié les vulnérabilités détectées dans SEAPATH au @chapter:yocto:cve-analysis et @chapter:debian:grype.
 
 Nous avons principalement utilisé la page "Vulnérabilités" de l'interface graphique (voir @fig:vulnscout:seapath:vulnerabilities) : en filtrant uniquement sur les vulnérabilités en attente et en les triant par ordre de sévérité, on a pu aisément voir les détails des vulnérabilités critiques pour ensuite chercher si elles étaient applicables ou non (voir @fig:vulnscout:seapath:vuln-modal). Cela nous a beaucoup aidé : chercher directement dans les fichiers SPDX et OpenVEX était très complexe dû à leur grande verbosité.
 
@@ -46,10 +46,10 @@ Nous avons principalement utilisé la page "Vulnérabilités" de l'interface gra
 
 VulnScout étant encore en bêta, il était normal d'y trouver quelques bugs ou fonctionnalités manquantes au fil de notre utilisation. On a donc remonté ceux-ci sur le dépôt de VulnScout. Quand ceux-ci étaient bloquants, on les a directement réglés et proposé les contributions via des @PR:pl.
 
-En effet, notre utilisation de VulnScout est légèrement différente de celle faite par les autres équipes de Savoir-faire Linux : là où eux l'utilisent directement via _meta-vulnscout_, nous paramétrons et lançons l'outil en utilisant la ligne de commande. Ainsi, nous avons pu corriger des soucis en rapport avec cette différence : par exemple, l'import des fichiers SPDX générés par SEAPATH rencontrait des problèmes de permissions.
+En effet, notre utilisation de VulnScout est légèrement différente de celle faite par les autres équipes de Savoir-faire Linux : là où eux l'utilisent directement via _meta-vulnscout_, nous paramétrons et lançons l'outil en utilisant la ligne de commande. Ainsi, nous avons pu corriger des soucis en rapport avec cette différence : par exemple, l'import des fichiers SPDX générés par SEAPATH rencontrait des problèmes de permissions. De plus, comme indiqué au @chapter:debian:grype, nous ingérons le résultat d'un scan Grype directement dans VulnScout sans passer par l'outil de scan intégré, on a donc rajouté une commande `--add-grype` à cet effet.
 
 #pagebreak()
-Un autre soucis rencontré qui n'avait pas été remarqué par l'équipe de VulnScout est la fuite de données entre projets : lorsqu'une instance VulnScout contient à la fois des projets basés sur Yocto et d'autres non, les informations provenant des @SBOM:pl Yocto (par exemple pour indiquer qu'une vulnérabilité n'est pas présente car un fichier n'est pas compilé) sont visibles sur les pages de vulnérabilités des autres projets, alors que l'information ne les concerne pas. La correction de ce bug a nécessité de modifier le schéma de la base de données interne de VulnScout afin de stocker l'information fournie par Yocto dans une table contenant exactement les bonnes relations (la table `sbom_observation` au centre de la @fig:vulnscout:analysis:erd). Grâce à ce changement, les informations provenant des @SBOM:pl Yocto apparaissent sur la page des vulnérabilités seulement lorsqu'elles concernent le projet sélectionné (voir @fig:vulnscout:analysis:yocto-description).
+Un autre soucis rencontré est la fuite de données entre projets : lorsqu'une instance VulnScout contient à la fois des projets basés sur Yocto et d'autres non, les informations provenant des @SBOM:pl Yocto (par exemple pour indiquer qu'une vulnérabilité n'est pas présente car un fichier n'est pas compilé) sont visibles sur les pages de vulnérabilités des autres projets, alors que l'information ne les concerne pas. La correction de ce bug a nécessité de modifier le schéma de la base de données interne de VulnScout afin de stocker l'information fournie par Yocto dans une table contenant exactement les bonnes relations (la table `sbom_observation` au centre de la @fig:vulnscout:analysis:erd). Grâce à ce changement, les informations provenant des @SBOM:pl Yocto apparaissent sur la page des vulnérabilités seulement lorsqu'elles concernent le projet sélectionné (voir @fig:vulnscout:analysis:yocto-description). Ce changement a également permis d'intégrer et d'afficher les commentaires remontés par Grype (par exemple lorsqu'une vulnérabilité est indiquée comme ignorée, voir le @chapter:debian:grype).
 
 #figure(
   image("../assets/erd 2.png", width: 80%),
@@ -58,7 +58,7 @@ Un autre soucis rencontré qui n'avait pas été remarqué par l'équipe de Vuln
 ) <fig:vulnscout:analysis:erd>
 
 #figure(
-  image("../assets/vs_vuln_yocto_desc.png", width: 80%),
+  image("../assets/vs_vuln_yocto_desc.png", width: 75%),
   caption: [Page montrant une information remontée par Yocto pour le projet actuel],
   placement: auto,
 ) <fig:vulnscout:analysis:yocto-description>
