@@ -160,10 +160,10 @@
   "Erwann ROUSSY",
   "Barbara FILA",
   [
-    Résumé du stage en français.
+    Résumé du stage en français. TODO
   ],
   [
-    Summary of the internship in english.
+    Summary of the internship in english. TODO
   ],
   defense-date: "2026-06-17",
   insa-tutor-suffix: "e",
@@ -196,6 +196,13 @@
 
 #insa-hide-page-counter()
 #heading(numbering: none, outlined: false)[Remerciements]
+Tout d'abord, merci beaucoup à mon tuteur de stage, Erwann, de m'avoir fait confiance pour ce stage. Merci pour ton aide, merci aussi de ne pas trop m'avoir aidé et de m'avoir laissé galérer, c'était très formateur. Merci aussi pour les discussions sans trop tête ni queue pour laisser notre cerveau s'arrêter un peu parfois. D'ailleurs, il manque les ravioli dans ta classification.
+
+Merci à la direction de faire le maximum pour que les stagiaires soient intégrés dans la vie professionnelle de l'entreprise, en nous faisant participer aux réunions quotidiennes et en nous poussant à contribuer aux projets internes.
+
+Merci aux collègues de Montréal de l'équipe VulnScout qui m'ont intégré à leurs cycles de développement, ont corrigé mes bugs et revu mes PRs sans rechigner. Merci beaucoup à Valentin d'avoir tout fait pour que je sois bien intégré dans l'équipe, même à 5 000 km d'ici !
+
+Enfin, merci à tous les collègues de Rennes pour leur bon accueil et notre intégration aisée à Florent et à moi, c'était sans prise de tête et ce fut un plaisir. À l'heure où j'écris ces lignes je n'en suis pas encore certain, mais je suis presque sûr qu'on va gagner le tournoi de Mölkky. Allez Kevin, allez Youssef on va y arriver !
 
 #pagebreak()
 #outline()
@@ -217,7 +224,8 @@
 
 //#pagebreak()
 = Conclusion
-TODO
+
+#include "conclusion.typ"
 
 #pagebreak()
 #set heading(numbering: none)

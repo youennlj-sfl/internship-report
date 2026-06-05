@@ -1,22 +1,26 @@
 #import "@preview/subpar:0.2.2"
 #import "@preview/zebraw:0.6.3": zebraw
-#import "@preview/meander:0.4.2"
+//#import "@preview/meander:0.4.2"
 
 = VulnScout <chapter:vulnscout>
-#meander.reflow({
+#let vs-presentation = [
+  VulnScout @vulnscout un outil de scan et d'évaluation de vulnérabilités basé sur les @SBOM:pl, conçu pour être convivial pour les développeurs et simple à intégrer avec Yocto, Buildroot (un autre outil de génération d'images Linux embarquées) et avec la plupart des systèmes générant des SBOMs var il prend en charge tous les formats standards (SPDX, CycloneDX, OpenVEX). Il a été conçu pour être très facile à mettre en place avec le minimum de configuration nécessaire. Il comble ainsi le fossé entre les outils de cybersécurité, souvent complexes et difficiles à mettre en place, et le développement logiciel au quotidien, notamment dans les projets comportant des dizaines voire des centaines de dépendances open source.
+]
+/*#meander.reflow({
   import meander: *
 
-  /*placed(top + right, boundary: contour.margin(15pt), figure(
+  placed(top + right, boundary: contour.margin(15pt), figure(
     image("../assets/vulnscout.jpg", width: 5cm),
     caption: [Logo de VulnScout],
-  ))*/
+  ))
 
   container()
 
   content[
-    #h(1em) VulnScout @vulnscout un outil de scan et d'évaluation de vulnérabilités basé sur les @SBOM:pl, conçu pour être convivial pour les développeurs et simple à intégrer avec Yocto, Buildroot (un autre outil de génération d'images Linux embarquées) et avec la plupart des systèmes générant des SBOMs var il prend en charge tous les formats standards (SPDX, CycloneDX, OpenVEX). Il a été conçu pour être très facile à mettre en place avec le minimum de configuration nécessaire. Il comble ainsi le fossé entre les outils de cybersécurité, souvent complexes et difficiles à mettre en place, et le développement logiciel au quotidien, notamment dans les projets comportant des dizaines voire des centaines de dépendances open source.
+    #h(1em) #vs-presentation
   ]
-})
+})*/
+#vs-presentation
 
 Concrètement, VulnScout est une application Web hébergée localement : son backend est écrit en Python avec le framework Flask @flask-manual, tandis que le frontend est en TypeScript avec le framework React @react-repo. Le développement de VulnScout a commencé en mai 2024 dans le cadre du stage de fin d'études de Louis Maillard, un étudiant de l'INSA Centre Val de Loire. Il a ensuite été annoncé officiellement à Embedded World 2025 @vulnscout-ew. Il est depuis disponible en open source mais toujours en développement actif. Une équipe dédiée de Savoir-faire Linux Montréal travaille dessus.
 

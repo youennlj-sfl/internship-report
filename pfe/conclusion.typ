@@ -1,0 +1,9 @@
+Ce projet de fin d'études a permis d'entamer le processus de gestion des vulnérabilités dans le projet SEAPATH, en mettant en place une génération de @SBOM:pl et une détection automatisée dans la @CI. Ces travaux ouvriront la voie à de futures discussions sur la gestion de la cybersécurité dans le projet SEAPATH, dans l'optique d'être cohérent avec les futures législations du domaine de l'informatique comme le CRA @cra-article.
+
+Ces travaux ont également permis de rendre publique la @CI de SEAPATH qui était encore interne chez Savoir-faire Linux. Ils rendent donc la chaîne d'intégration continue plus transparente, en plus d'offrir la possibilité dans le futur de publier les nouvelles versions de SEAPATH complètement automatiquement de manière traçable.
+
+Cette expérience sur SEAPATH m'a permis de découvrir le développement dans le cadre d'un projet @opensource mené par une organisation, où il faut composer avec différents acteurs et où les décisions ne se prennent pas aussi rapidement que pour un projet classique. De plus, j'ai pu contribuer à un projet open source de grande envergure, Yocto, via leur liste de diffusion, ce qui était assez impressionnant et m'a beaucoup appris sur la manière de fonctionner des communautés de l'open source.
+
+En parallèle, j'ai pu participer au cycle de développement d'un projet logiciel open source, VulnScout, d'une position privilégiée en étant à la fois utilisateur et contributeur du projet. Cela m'a permis de développer de précieuses compétences en collaboration sur un projet agile via les réunions hebdomadaires et les revues de code.
+
+Enfin, j'ai eu la chance d'évoluer dans un environnement d'une très grande compétence technique que j'ai pu un petit peu intégrer grâce aux réunions quotidiennes, aux revues de codes des collègues et aux discussions autour de la table du déjeuner.

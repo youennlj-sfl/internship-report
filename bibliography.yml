@@ -527,3 +527,10 @@ fai-project-homepage:
   url:
     value: https://fai-project.org/
     date: 2026-06-04
+
+podman:
+  type: repository
+  title: Podman
+  url:
+    value: https://github.com/podman-container-tools/podman
+    date: 2026-06-05
