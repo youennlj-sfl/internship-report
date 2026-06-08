@@ -160,10 +160,18 @@
   "Erwann ROUSSY",
   "Barbara FILA",
   [
-    Résumé du stage en français. TODO
+    Le projet porte sur la sécurisation de SEAPATH en mettant en place un suivi automatisé des vulnérabilités pour ses variantes Yocto et Debian. Le but est de fournir aux mainteneurs des rapports exploitables afin d’améliorer la sécurité d'un produit utilisé dans des infrastructures critiques.
+
+    Plusieurs approches ont été étudiées et implémentées pour détecter les vulnérabilités, notamment à l'aide de SBOMs. Des analyses ont été menées pour améliorer la qualité des informations extraites et réduire les faux positifs. Le travail a donné lieu à des contributions dans de grands projets open source.
+
+    L’ensemble a été intégré dans des pipelines d’intégration continue, avec des contrôles périodiques et des rapports automatisés pour faciliter le suivi et la remontée d’alertes tout en étant transparent et reproductible.
   ],
   [
-    Summary of the internship in english. TODO
+    The project focuses on securing SEAPATH by implementing automated vulnerability tracking for its Yocto and Debian variants. The goal is to provide maintainers with actionable reports to improve the security of a product used in critical infrastructure.
+
+    Several approaches were studied and implemented to detect vulnerabilities, notably using SBOMs. Analyses were carried out to improve the quality of extracted information and reduce false positives. The work resulted in contributions to major open-source projects.
+
+    All of this was integrated into continuous integration pipelines, with periodic checks and automated reports to facilitate monitoring and the escalation of alerts while remaining transparent and reproducible.
   ],
   defense-date: "2026-06-17",
   insa-tutor-suffix: "e",

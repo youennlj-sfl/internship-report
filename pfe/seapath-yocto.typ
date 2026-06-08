@@ -396,7 +396,7 @@ Tout ceci fonctionne très bien, sauf dans un cas très particulier : lorsqu'un 
 
 Ces deux options étant similaires en apparence, nous avons pris la première car elle était plus simple à mettre en place. Le problème de permissions s'est résolu, mais un autre est apparu : la @CI se lance automatiquement lorsqu'une @PR est ouverte, sans que les mainteneurs n'aient à l'approuver préalablement. C'est une grave faille de sécurité : n'importe quel attaquant peut introduire des changements ayants pour but d'exécuter du code malveillant dans l'environnement de @CI et potentiellement de corrompre la machine sur laquelle elle tourne, qui est hébergée au sein de Savoir-faire Linux (cf @chapter:yocto:ci:transfer). Malgré nos recherches, il n'existe pas de moyen simple de contourner ce problème.
 
-Ainsi, nous avons bifurqué vers la seconde option, qui est plus complexe car elle demande 1 pipeline supplémentaire et quelques manipulations pour lui passer les données nécessaires. On retrouve bien le bouton pour approuver le lancement de la @CI (voir @fig:yocto:ci:sync:approve-button) qui ajoute une protection contre les attaques. La structure de la @CI est ainsi complète. Un schéma est disponible en @fig:yocto:ci:sync:schema.
+Ainsi, nous avons bifurqué vers la seconde option, qui est plus complexe car elle demande un pipeline supplémentaire et quelques manipulations pour lui passer les données nécessaires. On retrouve bien le bouton pour approuver le lancement de la @CI (voir @fig:yocto:ci:sync:approve-button) qui ajoute une protection contre les attaques. La structure de la @CI est ainsi complète. Un schéma est disponible en @fig:yocto:ci:sync:schema.
 
 #figure(
   box(stroke: (bottom: luma(50%)), image("../assets/gh_pr_approve_wf.png")),
