@@ -10,7 +10,7 @@
     short: "IED",
     long: "Intelligent Electronic Device",
     description: [
-      Dispositif électronique utilisé dans les systèmes de gestion et de contrôle du réseau électrique. Ils sont capables de collecter des données en temps réel, de prendre des décisions autonomes et d’exécuter des actions telles que l’ouverture ou la fermeture de disjoncteurs en réponse à des conditions anormales du réseau.
+      Dispositif électronique utilisé dans les systèmes de gestion et de contrôle du réseau électrique. Ils sont capables de collecter des données en temps réel, de prendre des décisions autonomes et d'exécuter des actions telles que l'ouverture ou la fermeture de disjoncteurs en réponse à des conditions anormales du réseau.
     ],
   ),
   (
@@ -27,7 +27,7 @@
     short: "CI",
     long: "Intégration Continue",
     description: [
-      Ensemble de pratiques utilisées en génie logiciel consistant à vérifier à chaque modification de code source que le résultat des modifications ne produit pas de régression dans l’application développée.
+      Ensemble de pratiques utilisées en génie logiciel consistant à vérifier à chaque modification de code source que le résultat des modifications ne produit pas de régression dans l'application développée.
     ],
   ),
   (
@@ -41,7 +41,7 @@
     key: "distribution",
     short: "distribution",
     description: [
-      Ensemble de logiciels qui, associés à un noyau Linux, fournissent un système d’exploitation opérationnel. Ils ne sont pas nécessaires pour que le système démarre, mais offrent les services requis pour le cas d’usage souhaité.
+      Ensemble de logiciels qui, associés à un noyau Linux, fournissent un système d'exploitation opérationnel. Ils ne sont pas nécessaires pour que le système démarre, mais offrent les services requis pour le cas d'usage souhaité.
     ],
   ),
   (
@@ -64,14 +64,14 @@
     key: "smart-grid",
     short: "smart grid",
     description: [
-      Réseau électrique modernisé qui utilise la technologie numérique, la communication bidirectionnelle et des commandes avancées pour optimiser la génération, la transmission et la distribution d’électricité. Il intègre notamment des sources d’énergie renouvelable pour améliorer l’efficacité et la fiabilité de la distribution.
+      Réseau électrique modernisé qui utilise la technologie numérique, la communication bidirectionnelle et des commandes avancées pour optimiser la génération, la transmission et la distribution d'électricité. Il intègre notamment des sources d'énergie renouvelable pour améliorer l'efficacité et la fiabilité de la distribution.
     ],
   ),
   (
     key: "hyperviseur",
     short: "hyperviseur",
     description: [
-      Logiciel ou un matériel permettant de créer et d’exécuter des VMs. Il agit comme un gestionnaire de ressources et de supervision entre les systèmes d’exploitation invités et le matériel physique de l’hôte.
+      Logiciel ou matériel permettant de créer et d'exécuter des VMs. Il agit comme un gestionnaire de ressources et de supervision entre les systèmes d'exploitation invités et le matériel physique de l'hôte.
     ],
   ),
   (
@@ -80,14 +80,14 @@
     long: "Machine Virtuelle",
     longplural: "Machines Virtuelles",
     description: [
-      Émulation logicielle d’un ordinateur physique qui exécute un système d’exploitation et des applications comme un ordinateur physique, lancée sur un @hyperviseur.
+      Émulation logicielle d'un ordinateur physique qui exécute un système d'exploitation et des applications comme un ordinateur physique, lancée sur un @hyperviseur.
     ],
   ),
   (
     key: "noyau",
     short: "noyau",
     description: [
-      Coeur d’un système d’exploitation. Contient les programmes et pilotes essentiels à son fonctionnement, comme la gestion de la mémoire, des processus ou des I/O basiques. Souvent appelé par le terme anglais _kernel_.
+      Cœur d'un système d'exploitation. Contient les programmes et pilotes essentiels à son fonctionnement, comme la gestion de la mémoire, des processus ou des I/O basiques. Souvent appelé par le terme anglais _kernel_.
     ],
   ),
   (
@@ -95,7 +95,7 @@
     short: "RT",
     long: "Temps Réel",
     description: [
-      Caractéristique d'un système pour lequel le respect des contraintes temporelles dans l’exécution des traitements est aussi important que le résultat de ces traitements.
+      Caractéristique d'un système pour lequel le respect des contraintes temporelles dans l'exécution des traitements est aussi important que le résultat de ces traitements.
     ],
   ),
   (
@@ -160,11 +160,11 @@
   "Erwann ROUSSY",
   "Barbara FILA",
   [
-    Le projet porte sur la sécurisation de SEAPATH en mettant en place un suivi automatisé des vulnérabilités pour ses variantes Yocto et Debian. Le but est de fournir aux mainteneurs des rapports exploitables afin d’améliorer la sécurité d'un produit utilisé dans des infrastructures critiques.
+    Le projet porte sur la sécurisation de SEAPATH en mettant en place un suivi automatisé des vulnérabilités pour ses variantes Yocto et Debian. Le but est de fournir aux mainteneurs des rapports exploitables afin d'améliorer la sécurité d'un produit utilisé dans des infrastructures critiques.
 
     Plusieurs approches ont été étudiées et implémentées pour détecter les vulnérabilités, notamment à l'aide de SBOMs. Des analyses ont été menées pour améliorer la qualité des informations extraites et réduire les faux positifs. Le travail a donné lieu à des contributions dans de grands projets open source.
 
-    L’ensemble a été intégré dans des pipelines d’intégration continue, avec des contrôles périodiques et des rapports automatisés pour faciliter le suivi et la remontée d’alertes tout en étant transparent et reproductible.
+    L'ensemble a été intégré dans des pipelines d'intégration continue, avec des contrôles périodiques et des rapports automatisés pour faciliter le suivi et la remontée d'alertes tout en étant transparent et reproductible.
   ],
   [
     The project focuses on securing SEAPATH by implementing automated vulnerability tracking for its Yocto and Debian variants. The goal is to provide maintainers with actionable reports to improve the security of a product used in critical infrastructure.

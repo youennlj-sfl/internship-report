@@ -304,9 +304,11 @@ Enfin, puisque des vulnérabilités sont découvertes tous les jours, on a mis e
 === #gls-longplural("PR", update: true) <chapter:yocto:ci:pr>
 Jusqu'ici, le pipeline de construction ne s'exécutait que lorsqu'un commit était poussé sur la branche principale du dépôt. Cependant, la politique de contribution à SEAPATH impose de pousser son code sur une branche à part dans un dépot personnel, puis d'ensuite faire une @PR:long sur le dépôt principal. Nous avons donc créé un pipeline qui se lance lorsque qu'une @PR est ouverte vers la branche principale : celle-ci va construire les images, puis faire la détection de vulnérabilités.
 
-Afin de ne pas dupliquer de code, nous avons pris avantage du concept des pipelines réutilisables de GitHub Actions @gh-actions-reuse-workflows : cela permet d'"inclure" un pipeline dans un autre. Ainsi, nous avons créé 2 pipelines réutilisables, qui sont inclus dans les pipelines `push` et `pr` :
+Afin de ne pas dupliquer de code, nous avons pris avantage du concept des pipelines réutilisables de GitHub Actions @gh-actions-reuse-workflows : cela permet d'"inclure" un pipeline dans un autre. Ainsi, nous avons créé 2 pipelines réutilisables, qui sont inclus dans les pipelines `push`, `pr` et `periodic-cve-check` :
 - `_build`, décrit en @chapter:yocto:ci:transfer, qui construit les images et sauvegarde les @SBOM:pl ;
 - `_cve-check`, décrit en @chapter:yocto:ci:cve-check, qui effectue la détection des vulnérabilités sur les @SBOM:pl sauvegardés précédemment et exporte des rapports.
+
+Un diagramme montrant les différents pipelines ainsi que leurs relations est disponible en @fig:yocto:ci:pr:comment.
 
 De plus, afin de rendre les potentiels problèmes rencontrés lors de la @CI les plus clairs possibles, nous avons créé un pipeline à part, `pr-summary`, qui compile les résultats et poste un commentaire sur la @PR qui a déclenché le pipeline : ce commentaire indique si la construction des images s'est bien passée et si des vulnérabilités ont dépassé les seuils. Un exemple est disponible en @fig:yocto:ci:pr:comment.
 
@@ -314,6 +316,18 @@ De plus, afin de rendre les potentiels problèmes rencontrés lors de la @CI les
   image("../assets/gh_pr_comment.png", height: 33%),
   caption: [Commentaire créé automatiquement sur une @PR par la @CI.],
 ) <fig:yocto:ci:pr:comment>
+
+#figure(
+  [
+    #image("../assets/yocto-ci-main.svg")
+    #block(stroke: .5pt, inset: .5em, align(left)[
+      *Légende :*
+      - flèches en pointillés : déclenchement de pipeline automatique
+      - flèches épaisses : inclusion de pipeline
+    ])
+  ],
+  caption: [Schéma de la CI],
+) <fig:yocto:ci:pr:diagram-main>
 
 
 === Approche multi-dépôts <chapter:yocto:ci:multirepo>
@@ -405,10 +419,9 @@ Ainsi, nous avons bifurqué vers la seconde option, qui est plus complexe car el
 
 #figure(
   [
-    #image("../assets/ci-diagram.svg", width: auto)
+    #image("../assets/yocto-ci-full.svg", width: auto)
     #block(stroke: .5pt, inset: .5em, align(left)[
       *Légende :*
-      - flèches simples : déclenchement de pipeline manuel
       - flèches en pointillés : déclenchement de pipeline automatique
       - flèches épaisses : inclusion de pipeline
       - rectangles : fichiers de pipelines
