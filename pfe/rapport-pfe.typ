@@ -257,7 +257,63 @@ Enfin, merci à tous les collègues de Rennes pour leur bon accueil et notre int
 ]
 
 == Planning
-*TODO*
+#import "@preview/timeliney:0.4.0"
+
+#timeliney.timeline(
+  show-grid: false,
+  {
+    import timeliney: *
+
+    headerline(
+      group(([*Février*], 6)),
+      group(([*Mars*], 9)),
+      group(([*Avril*], 9)),
+      group(([*Mai*], 8)),
+      group(([*Juin*], 9)),
+      group(([], 1)),
+    )
+
+    taskgroup(
+      title: [*Connexe*],
+      {
+        task("Formations", (0, 3))
+        task([Rapport de PFE], (28, 34))
+        task([Préparation de la\ soutenance], (33, 36))
+      },
+    )
+
+    taskgroup(
+      title: [*SEAPATH Yocto*],
+      {
+        task([Comparaison des méthodes\ de détection], (2, 9))
+        task("Analyse des vulnérabilités", (4, 5), (8, 11))
+        task([Migration de la CI], (9, 17))
+        task([CI de détection\ des vulnérabilités], (15, 19), (28, 30))
+      },
+    )
+
+    taskgroup(
+      title: [*SEAPATH Debian*],
+      {
+        task([Étude des approches\ de détection], (17, 19))
+        task([Génération de SBOM], (19, 23))
+        task([CI de détection\ des vulnérabilités], (23, 25))
+      },
+    )
+
+    taskgroup(
+      title: [*VulnScout*],
+      {
+        task([Contributions et revues], (5, 7), (25, 36))
+        task([Comparaison avec\ Dependency-Track], (20, 23))
+      },
+    )
+
+    milestone("Visite du stage", at: 22, style: (stroke: (dash: "dashed")))
+    milestone(box(fill: white, outset: 1pt)[Rendu du rapport], at: 34, style: (stroke: (dash: "dashed")))
+    milestone("Soutenance", at: 36, style: (stroke: (dash: "dashed")))
+  },
+)
 
 #pagebreak()
 == Rapport de comparaison des solutions de détection de vulnérabilité <annex:cve-comparison-report>
