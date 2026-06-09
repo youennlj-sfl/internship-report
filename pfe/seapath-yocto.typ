@@ -145,7 +145,7 @@ Finalement, après comparaison en profondeur des fichiers générés par la cons
     ```,
     lang: false,
   ),
-  caption: [Fichier de configuration rajouté àa la recette du @noyau Linux],
+  caption: [Fichier de configuration rajouté à la recette du @noyau Linux],
 ) <fig:yocto:implem:kernel-cfg>
 
 
@@ -305,21 +305,18 @@ Enfin, puisque des vulnérabilités sont découvertes tous les jours, on a mis e
 Jusqu'ici, le pipeline de construction ne s'exécutait que lorsqu'un commit était poussé sur la branche principale du dépôt. Cependant, la politique de contribution à SEAPATH impose de pousser son code sur une branche à part dans un dépot personnel, puis d'ensuite faire une @PR:long sur le dépôt principal. Nous avons donc créé un pipeline qui se lance lorsque qu'une @PR est ouverte vers la branche principale : celle-ci va construire les images, puis faire la détection de vulnérabilités.
 
 Afin de ne pas dupliquer de code, nous avons pris avantage du concept des pipelines réutilisables de GitHub Actions @gh-actions-reuse-workflows : cela permet d'"inclure" un pipeline dans un autre. Ainsi, nous avons créé 2 pipelines réutilisables, qui sont inclus dans les pipelines `push`, `pr` et `periodic-cve-check` :
-- `_build`, décrit en @chapter:yocto:ci:transfer, qui construit les images et sauvegarde les @SBOM:pl ;
-- `_cve-check`, décrit en @chapter:yocto:ci:cve-check, qui effectue la détection des vulnérabilités sur les @SBOM:pl sauvegardés précédemment et exporte des rapports.
+#block(breakable: false)[
+  - `_build`, décrit au @chapter:yocto:ci:transfer, qui construit les images et sauvegarde les @SBOM:pl ;
+  - `_cve-check`, décrit au @chapter:yocto:ci:cve-check, qui effectue la détection des vulnérabilités sur les @SBOM:pl sauvegardés précédemment et exporte des rapports.
+]
 
-Un diagramme montrant les différents pipelines ainsi que leurs relations est disponible en @fig:yocto:ci:pr:comment.
+Un diagramme montrant les différents pipelines ainsi que leurs relations est disponible en @fig:yocto:ci:pr:diagram-main.
 
 De plus, afin de rendre les potentiels problèmes rencontrés lors de la @CI les plus clairs possibles, nous avons créé un pipeline à part, `pr-summary`, qui compile les résultats et poste un commentaire sur la @PR qui a déclenché le pipeline : ce commentaire indique si la construction des images s'est bien passée et si des vulnérabilités ont dépassé les seuils. Un exemple est disponible en @fig:yocto:ci:pr:comment.
 
 #figure(
-  image("../assets/gh_pr_comment.png", height: 33%),
-  caption: [Commentaire créé automatiquement sur une @PR par la @CI.],
-) <fig:yocto:ci:pr:comment>
-
-#figure(
   [
-    #image("../assets/yocto-ci-main.svg")
+    #image("../assets/yocto-ci-main.svg", width: 72%)
     #block(stroke: .5pt, inset: .5em, align(left)[
       *Légende :*
       - flèches en pointillés : déclenchement de pipeline automatique
@@ -327,7 +324,14 @@ De plus, afin de rendre les potentiels problèmes rencontrés lors de la @CI les
     ])
   ],
   caption: [Schéma de la CI],
+  placement: auto,
 ) <fig:yocto:ci:pr:diagram-main>
+
+#figure(
+  image("../assets/gh_pr_comment.png", height: 32%),
+  caption: [Commentaire créé automatiquement sur une @PR par la @CI.],
+  placement: auto,
+) <fig:yocto:ci:pr:comment>
 
 
 === Approche multi-dépôts <chapter:yocto:ci:multirepo>
@@ -400,21 +404,23 @@ Nous avons donc fait le choix du premier _trigger_ : on utilise l'@API de GitHub
 #figure(
   image("/assets/gh_workflow_dispatch.png", width: 35%),
   caption: [Élément d'interface utilisateur qui apparaît à cause du _trigger_ `workflow_dispatch`],
+  placement: none,
 ) <fig:yocto:ci:sync:ui-popup>
 
-La deuxième difficulté de cette CI synchronisée entre 2 dépôts a été la gestion des permissions et secrets. En effet, afin de pouvoir déclencher la CI dans le dépôt principal, le pipeline de "délégation" a besoin d'un accès *authentifié* à l'@API GitHub Actions. Nous avons donc dû créer une "GitHub App" qui possède les permissions pour déclencher des pipelines et stocker sa clé privée dans le dictionnaire de valeurs secrètes du dépôt _meta-seapath_.
+La deuxième difficulté de cette CI synchronisée entre 2 dépôts a été la gestion des permissions et secrets. En effet, afin de pouvoir déclencher la CI dans le dépôt principal, le pipeline de "délégation" a besoin d'un accès *authentifié* à l'@API GitHub Actions. Il a donc été nécessaire de créer une "GitHub App" qui possède les permissions pour déclencher des pipelines et stocker sa clé privée dans le dictionnaire de valeurs secrètes du dépôt _meta-seapath_.
 
-Tout ceci fonctionne très bien, sauf dans un cas très particulier : lorsqu'un contributeur externe à l'organisation SEAPATH propose une @PR, le pipeline exécuté dispose de permissions restreintes et n'a pas accès aux secrets du dépôt. Il s'agit d'une mesure préventive mise en place par GitHub pour éviter que des @PR malveillantes volent des données confidentielles. Dans notre cas, il n'y a pas de risques car nous ne téléchargeons pas le code de la @PR dans le pipeline de délégation. Cependant, à cause de ces restrictions, nous ne pouvons pas faire la délégation dans ce pipeline, puisque nous avons besoin du secret. Il y avait là encore 2 solutions possibles :
+Tout ceci fonctionne très bien, sauf dans un cas très particulier : lorsqu'un contributeur externe à l'organisation SEAPATH propose une @PR, le pipeline exécuté dispose de permissions restreintes et n'a pas accès aux secrets du dépôt. Il s'agit d'une mesure préventive mise en place par GitHub pour éviter que des @PR malveillantes volent des données confidentielles. Dans notre cas, il n'y a pas de risques car le code de la @PR n'est pas téléchargé dans le pipeline de délégation. Cependant, à cause de ces restrictions, il n'est pas possible de faire la délégation dans ce pipeline, puisqu'il y a besoin du secret. Il y avait là encore 2 solutions possibles :
 + Utiliser le _trigger_ `pull_request_target` qui s'exécute sans les restrictions de sécurité ;
 + Utiliser le _trigger_ `workflow_run` qui permet d'automatiquement lancer un pipeline à la fin d'un autre, cette fois-ci sans les restrictions de sécurité.
 
-Ces deux options étant similaires en apparence, nous avons pris la première car elle était plus simple à mettre en place. Le problème de permissions s'est résolu, mais un autre est apparu : la @CI se lance automatiquement lorsqu'une @PR est ouverte, sans que les mainteneurs n'aient à l'approuver préalablement. C'est une grave faille de sécurité : n'importe quel attaquant peut introduire des changements ayants pour but d'exécuter du code malveillant dans l'environnement de @CI et potentiellement de corrompre la machine sur laquelle elle tourne, qui est hébergée au sein de Savoir-faire Linux (cf @chapter:yocto:ci:transfer). Malgré nos recherches, il n'existe pas de moyen simple de contourner ce problème.
+Ces deux options étant similaires en apparence, on a sélectionné la première car elle était plus simple à mettre en place. Le problème de permissions s'est résolu, mais un autre est apparu : la @CI se lance automatiquement lorsqu'une @PR est ouverte, sans que les mainteneurs n'aient à l'approuver préalablement. C'est une grave faille de sécurité : n'importe quel attaquant peut introduire des changements ayants pour but d'exécuter du code malveillant dans l'environnement de @CI et potentiellement de corrompre la machine sur laquelle elle tourne, qui est hébergée au sein de Savoir-faire Linux (cf @chapter:yocto:ci:transfer). Malgré nos recherches, il n'existe pas de moyen simple de contourner ce problème.
 
 Ainsi, nous avons bifurqué vers la seconde option, qui est plus complexe car elle demande un pipeline supplémentaire et quelques manipulations pour lui passer les données nécessaires. On retrouve bien le bouton pour approuver le lancement de la @CI (voir @fig:yocto:ci:sync:approve-button) qui ajoute une protection contre les attaques. La structure de la @CI est ainsi complète. Un schéma est disponible en @fig:yocto:ci:sync:schema.
 
 #figure(
   box(stroke: (bottom: luma(50%)), image("../assets/gh_pr_approve_wf.png")),
   caption: [Encart demandant aux mainteneurs d'approuver le lancement de la @CI pour une @PR venant d'un contributeur externe.],
+  placement: auto,
 ) <fig:yocto:ci:sync:approve-button>
 
 #figure(
@@ -431,4 +437,5 @@ Ainsi, nous avons bifurqué vers la seconde option, qui est plus complexe car el
   caption: [
     Schéma complet de la CI.
   ],
+  placement: auto,
 ) <fig:yocto:ci:sync:schema>
