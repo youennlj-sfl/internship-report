@@ -100,6 +100,8 @@ Checklist pour la soutenance
 Fin du plan
 */
 
+#let is-preview = "x-preview" in sys.inputs
+
 #import "@local/silky-slides-insa:0.2.0": *
 
 #set text(lang: "fr")
@@ -127,8 +129,11 @@ Fin du plan
   config-common(
     //show-bibliography-as-footnote: bibliography("bibliography.yml"),
     // footnotes are too big
+    show-notes-on-second-screen: if is-preview { none } else { right },
   ),
 )
+
+#import "@preview/fletcher:0.5.8"
 
 = Contexte et enjeux
 //== Les postes électriques et leur transition
@@ -159,7 +164,7 @@ Fin du plan
   - basé sur le noyau Linux
 ][
   #let cropped-img = box(
-    image("../assets/seapath_in_substation-V5.svg"),
+    figure(image("../assets/seapath_in_substation-V5.svg")),
     clip: true,
     inset: (
       left: -17%,
@@ -196,26 +201,81 @@ Fin du plan
   - En utilisant le projet *VulnScout* @vulnscout de Savoir-faire Linux
 //  - Les corriger si possible
 //  - Réduire le nombre de faux positifs
+#speaker-note[
+  Présenter rapidement VulnScout
+]
 
-But recherché pour SEAPATH :
+#cols(columns: (1fr, auto))[
+  But recherché pour SEAPATH :
 
-- Vue facile sur les vulnérabilités présentes dans SEAPATH
-  - Transparent pour les utilisateurs
+  - Vue facile sur les vulnérabilités présentes dans SEAPATH
+    - Transparent pour les utilisateurs
 
-  - Mainteneurs peuvent potentiellement corriger en cas de vulnérabilité majeure
+    - Mainteneurs peuvent potentiellement corriger en cas de vulnérabilité majeure
+][
+  #figure(image("../assets/vulnscout.jpg", width: 6cm))
+
+]
 
 == Savoir-faire Linux
-*Entreprise de Services Numériques* d'origine québécoise fondée en 1999.
+#slide(composer: (1fr, 8cm))[
+  *Entreprise de Services Numériques* d'origine québécoise fondée en 1999.
 
-Spécialité : technologies *libres*, systèmes et applications sous *Linux*.
+  Spécialité : technologies *libres*, systèmes et applications sous *Linux*.
 
-Deux bureaux :
-- *Montréal*, plus de 50 collaborateurs, projets logiciels open source "grand public" e.g. VulnScout @vulnscout, Jami @jami.
-- *Rennes*, \~15 collaborateurs (majorité d'ingénieurs en informatique), spécialisé Linux embarqué. Maintient SEAPATH.
+  Deux bureaux :
+  - *Montréal*, +50 collaborateurs, logiciels open source
+  - *Rennes*, \~15 collaborateurs (majorité d'ingénieurs en informatique), spécialisé Linux embarqué
 
-Engagé activement dans l'open source via salons et contributions à de grands projets, e.g. Yocto @yoctoproject.
+  Engagé activement dans l'open source : salons, contributions à de grands projets, e.g. Yocto @yoctoproject.
+][
+  #figure(image("../assets/savoirfairelinux_logo.png", width: 100%), caption: [Logo de l'entreprise])
+  #v(2em)
+  #figure(image("../assets/jami.webp", width: 3cm), caption: [Jami @jami, un logiciel développé par SFL])
+]
 
-== Environnement technique
+//== Environnement technique
+
+== Méthodologie générale de détection des vulnérabilités
+SEAPATH #sym.approx distribution Linux : *centaines de composants*
+
+#sym.arrow.double *impossible* de détecter les failles dans le code (surface trop grande)
+
+#pause
+#v(1em)
+Notre approche : utiliser les *bases de données de vulnérabilités*
+
+- besoin de liste des composants présents = *SBOM*
+- à faire générer avec SEAPATH
+
+#figure(
+  text(size: 17pt, fletcher.diagram(
+    node-stroke: 1pt,
+    node-inset: 0.5em,
+    node-fill: insa-colors.tertiary.lighten(50%),
+    spacing: 1.5em,
+    {
+      import fletcher: *
+
+      node((0, 0), width: 4cm, height: 3cm)[Collecte des paquets]
+      edge("-|>")
+      node((1, 0), width: 4cm, height: 3cm)[Génération des SBOMs]
+      edge("-|>")
+      node((2, 0), width: 5cm, height: 3cm)[Enrichissement des données]
+      edge("-|>")
+      node(
+        (3, 0),
+        width: 5cm,
+        height: 3cm,
+        stroke: 2pt,
+        fill: insa-colors.secondary.lighten(80%),
+      )[Mise en correspondance avec BDD]
+      edge("-|>")
+      node((4, 0), width: 5cm, height: 3cm)[Filtrage avec heuristiques]
+    },
+  )),
+  caption: [Processus de détection des vulnérabilités],
+)
 
 
 /*
