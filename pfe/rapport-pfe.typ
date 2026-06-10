@@ -215,6 +215,14 @@ Enfin, merci à tous les collègues de Rennes pour leur bon accueil et notre int
 #pagebreak()
 #outline()
 
+#heading(numbering: none, outlined: false)[Glossaire]
+#print-glossary(
+  entry-list,
+  entry-sortkey: x => lower(x.key),
+  deduplicate-back-references: true,
+)
+
+#pagebreak()
 #insa-show-page-counter(current-page: 1)
 #include "intro.typ"
 
@@ -237,14 +245,7 @@ Enfin, merci à tous les collègues de Rennes pour leur bon accueil et notre int
 
 #pagebreak()
 #set heading(numbering: none)
-= Glossaire
 #insa-hide-page-counter()
-#print-glossary(
-  entry-list,
-  entry-sortkey: x => lower(x.key),
-  deduplicate-back-references: true,
-)
-#pagebreak()
 #text(size: 10pt, bibliography("../bibliography.yml"))
 
 #pagebreak()

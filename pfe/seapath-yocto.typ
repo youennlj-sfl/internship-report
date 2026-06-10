@@ -210,7 +210,7 @@ Enfin, la documentation de SEAPATH Yocto a été mise à jour pour indiquer aux 
 
 Pour le moment, la détection des vulnérabilités a été faite manuellement après chaque build de SEAPATH. La prochaine étape est d'intégrer cette détection dans le pipeline de @CI. Grâce à cela, à chaque changement dans le code de SEAPATH, le système va chercher les vulnérabilités et générer un rapport. C'est particulièrement pratique pour les #gls("PR", first: true) : cela permettra de détecter aisément si un contributeur externe essaie d'introduire une faille dans SEAPATH car les vulnérabilités ajoutée apparaîtraient automatiquement dans le résumé de la @PR.
 
-Jusqu'à maintenant, la @CI de SEAPATH est interne à Savoir-faire Linux : elle tourne sur une instance Jenkins @jenkins et est lancée dès qu'un commit est prêt à être intégré dans la base de code Gerrit @gerrit interne à l'entreprise. Cependant, SEAPATH est un projet @opensource dont les dépôts publiques sont aussi hébergés sur GitHub @github. Les personnes externes à Savoir-faire Linux qui souhaitent contribuer à SEAPATH le font sur GitHub et ne déclenchent donc pas la @CI, ce qui nullifie en partie l'intérêt d'ajouter la détection de vulnérabilités dans la @CI. De plus, vu que Jenkins est uniquement accessible en interne chez Savoire-faire Linux, il n'y a pas de transparence sur les processus utilisés lors du développement. Pour ces raisons, il a été décidé en premier lieu de réécrire la @CI sur GitHub Actions @github-actions pour ensuite y rajouter la détection de vulnérabilités.
+Jusqu'à maintenant, la @CI de SEAPATH est interne à Savoir-faire Linux : elle tourne sur une instance Jenkins @jenkins et est lancée dès qu'un commit est prêt à être intégré dans la base de code Gerrit @gerrit interne à l'entreprise. Cependant, SEAPATH est un projet @opensource dont les dépôts publiques sont aussi hébergés sur GitHub @github. Les personnes externes à Savoir-faire Linux qui souhaitent contribuer à SEAPATH le font sur GitHub et ne déclenchent donc pas la @CI, ce qui nullifie en partie l'intérêt d'ajouter la détection de vulnérabilités dans la @CI. De plus, puisque Jenkins est uniquement accessible en interne chez Savoire-faire Linux, il n'y a pas de transparence sur les processus utilisés lors du développement. Pour ces raisons, il a été décidé en premier lieu de réécrire la @CI sur GitHub Actions @github-actions pour ensuite y rajouter la détection de vulnérabilités.
 
 === Transfert sur GitHub Actions <chapter:yocto:ci:transfer>
 
@@ -297,7 +297,7 @@ Lorsque des vulnérabilités dépassent les seuils, on a pris soin de rendre l'e
   placement: auto,
 ) <fig:yocto:ci:cve-check:gh-annotations>
 
-Comme indiqué dans le @fig:yocto:comparison:databases-table du @chapter:yocto:comparison:cve-amount, _sbom-cve-check_ a besoin de télécharger les bases de données du NVD et du projet CVE#emoji.tm. Celles-ci sont particulièrement conséquentes : elles représentent à elles deux 7,1 Go de données. Ce n'est raisonnable de télécharger ces bases de données à chaque fois que la CI tourne. Ainsi, nous faisons aussi tourner la CI sur le serveur dédié de Savoir-faire Linux, en configurant notre pipeline pour que les bases de données soient stockées dans un emplacement qui ne soit pas régulièrement supprimé.
+Comme indiqué dans le @fig:yocto:comparison:databases-table du @chapter:yocto:comparison:cve-amount, _sbom-cve-check_ a besoin de télécharger les bases de données du NVD et du projet CVE#emoji.tm. Celles-ci sont particulièrement conséquentes : elles représentent à elles deux 7,1 Go de données. Ce n'est pas raisonnable de télécharger ces bases de données à chaque fois que la CI tourne. Ainsi, nous faisons aussi tourner la CI sur le serveur dédié de Savoir-faire Linux, en configurant notre pipeline pour que les bases de données soient stockées dans un emplacement qui ne soit pas régulièrement supprimé.
 
 Enfin, puisque des vulnérabilités sont découvertes tous les jours, on a mis en place un pipeline `periodic-cve-check` qui s'exécute automatiquement tous les matins et va détecter les vulnérabilités sur la dernière image de SEAPATH construite en utilisant le @SBOM sauvegardé du dernier pipeline. Ainsi, même si il n'y a pas eu d'activité sur le dépôt, la détection se fait tout de même régulièrement et permet de ne pas laisser une nouvelle vulnérabilité critique non détectée.
 
@@ -403,7 +403,7 @@ Nous avons donc fait le choix du premier _trigger_ : on utilise l'@API de GitHub
 
 #figure(
   image("/assets/gh_workflow_dispatch.png", width: 35%),
-  caption: [Élément d'interface utilisateur qui apparaît à cause du _trigger_ `workflow_dispatch`],
+  caption: [Élément d'interface utilisateur qui apparaît à cause du _trigger_~ `workflow_dispatch`],
   placement: none,
 ) <fig:yocto:ci:sync:ui-popup>
 

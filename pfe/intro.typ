@@ -62,7 +62,7 @@ Dans un poste de transformation on trouve de nombreux équipements (@fig:context
 
 Le *bâtiment de contrôle* (10) abrite des équipement assurant la gestion de ces composants. Les systèmes de contrôle et d'automatisation des réseaux électriques jouent un rôle crucial dans cette gestion, en intégrant des technologies avancées pour superviser et optimiser la distribution de l'énergie. Parmi ces technologies, les @ied:pl occupent une place centrale.
 
-Un @ied est un élément clé d'un poste électrique, remplaçant les relais traditionnels et autres appareils par des dispositifs dotés de microprocesseurs et de communications avancées. Il protège les lignes, génère des événements, gère les régulateurs de tension, et collecte des données critiques, permettant une prise de décision rapide pour la protection et la restauration du réseau. @mcdonald2007substation
+Un @ied est un élément clé d'un poste électrique, remplaçant les relais traditionnels et autres appareils par des dispositifs dotés de microprocesseurs et de communications avancées. Il protège les lignes, génère des événements, gère les régulateurs de tension et collecte des données critiques, permettant une prise de décision rapide pour la protection et la restauration du réseau. @mcdonald2007substation
 
 === Les limites du modèle actuel
 Aujourd'hui, en raison principalement de l'essor des énergies renouvelables, intégrant ainsi des sources d'énergie aux moyennes et basses tensions, on passe d'un modèle statique et unidirectionnel du réseau vers un modèle beaucoup plus dynamique et imprévisible, qu'on appelle @smart-grid.
@@ -76,7 +76,7 @@ La *virtualisation* regroupe les techniques matérielles et/ou logicielles qui p
 
 La virtualisation offre de nombreux avantages :
 - Efficacité des ressources : la virtualisation permet d'exécuter plusieurs applications sur une seule machine, optimisant l'utilisation du matériel.
-- Déploiement rapide : la mise en place des @VM:pl est plus rapide que l'installation dematériel, surtout avec l'automatisation.
+- Déploiement rapide : la mise en place des @VM:pl est plus rapide que l'installation de matériel, surtout avec l'automatisation.
 
 SEAPATH utilise le module noyau KVM @kivity2007kvm, permettant de convertir l'OS en un @hyperviseur dit "de type 1", ce qui signifie que les @VM:pl s'exécutent directement sur le matériel, sans traverser le système d'exploitation hôte. De plus, SEAPATH utilise QEMU @qemu en conjonction avec KVM. Dans cette configuration, KVM se charge des interactions avec le matériel tandis que QEMU émule les périphériques et gère l'environnement de la @VM. Enfin, libvirt @libvirt est utilisé pour gérer et orchestrer les @VM:pl.
 
