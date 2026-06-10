@@ -271,13 +271,19 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
         height: 3cm,
         stroke: 2pt,
         fill: insa-colors.secondary.lighten(80%),
-      )[Mise en correspondance avec BDD]
+      )[Mise en correspondance avec BDD#footnote[BDD : Base de données]]
       edge("-|>")
-      node((4, 0), width: 5cm, height: 3cm)[Filtrage avec heuristiques]
+      node((4, 0), width: 5cm, height: 3cm)[Filtrage des vulnérabilités (heuristiques)]
     },
   )),
   caption: [Processus de détection des vulnérabilités],
 )
+
+#speaker-note[
+  Schéma haut niveau, on va voir chaque étape
+
+  BDD = base de données, évoquer exemples (NVD, CVE...)
+]
 
 == Les SBOMs
 #v(-1.5em)
@@ -345,13 +351,13 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
     {
       import fletcher: *
 
-      node((0, 0), width: 4.5cm, height: 3cm)[Récupération des sources]
+      node((0, 0), width: 4.5cm, height: 2.5cm)[Récupération des sources]
       edge("-|>")
-      node((1, 0), width: 4.5cm, height: 3cm)[Compilation des paquets]
+      node((1, 0), width: 4.5cm, height: 2.5cm)[Compilation des paquets]
       edge("-|>")
-      node((2, 0), width: 4.5cm, height: 3cm)[Génération du système de fichiers]
+      node((2, 0), width: 4.5cm, height: 2.5cm)[Génération du système de fichiers]
       edge("-|>")
-      node((3, 0), width: 4.5cm, height: 3cm)[Création de l'image]
+      node((3, 0), width: 4.5cm, height: 2.5cm)[Création de l'image]
     },
   )),
   caption: [Processus de construction d'une image avec Yocto],
@@ -368,6 +374,98 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
 ]
 
 == Étude des approches de détection de vulnérabilités
+
+#cols(
+  columns: (1fr, 4cm),
+)[
+  - Approches utilisant les SBOMs :
+    - *Grype* @grype-in-production : scanneur orienté distributions et conteneurs
+    - *sbom-cve-check* @sbom-cve-check : détecteur orienté Yocto
+
+  #pause
+  #figure(
+    text(size: 17pt, fletcher.diagram(
+      node-stroke: 1pt,
+      node-inset: 0.5em,
+      node-fill: insa-colors.tertiary.lighten(50%),
+      spacing: 1.5em,
+      {
+        import fletcher: *
+
+        node((0, 0), width: 4.5cm, height: 2.5cm)[Chargement du SBOM]
+        edge("-|>")
+        node((1, 0), width: 5cm, height: 2.5cm)[Téléchargement des BDD]
+        edge("-|>")
+        node((2, 0), width: 5cm, height: 2.5cm)[Mise en correspondance]
+        edge("-|>")
+        node((3, 0), width: 4.5cm, height: 2.5cm)[Export des résultats]
+      },
+    )),
+  )
+][
+  #meanwhile
+  #figure(image("../assets/grype-logo-name.png", width: 100%))
+]
+#pause
+#pause
+
+- Approche sans SBOMs : *_cve-check_*, classe pré-faite de Yocto
+  - cherche les vulnérabilités lors de la construction de l'image
+
+#pause
+#figure(
+  text(size: 17pt, fletcher.diagram(
+    node-stroke: 1pt,
+    node-inset: 0.5em,
+    node-fill: insa-colors.tertiary.lighten(50%),
+    spacing: 2em,
+    {
+      import fletcher: *
+
+      node((0, 0), width: 4.5cm, height: 2.5cm)[Récupération des sources]
+      edge("-|>")
+      node((1, 0), width: 4.5cm, height: 2.5cm)[Compilation des paquets]
+      edge("-|>")
+      node(
+        (2, 0),
+        width: 5cm,
+        height: 2.5cm,
+        stroke: 2pt,
+        fill: insa-colors.secondary.lighten(80%),
+      )[Mise en correspondance avec BDD]
+      edge("-|>")
+      node((3, 0), width: 4.5cm, height: 2.5cm)[Génération du système de fichiers]
+      edge("-|>")
+      node((4, 0), width: 4.5cm, height: 2.5cm)[Création de l'image]
+    },
+  )),
+)
+
+== Évaluation des approches
+#meander.reflow({
+  import meander: *
+
+  placed(top + right, figure(text(size: 18pt, table(
+    columns: 3,
+    inset: 0.5em,
+    [], [Vuln.\ trouvée], [Vuln.\ applicable],
+    [Faux positif], [#sym.checkmark], [#sym.crossmark],
+    [Faux négatif], [#sym.crossmark], [#sym.checkmark],
+  ))))
+
+  container()
+
+  content[
+    Critères :
+    - *nombre total* de vulnérabilités trouvées
+
+    - taux de *faux positifs / faux négatifs*
+
+    - facilité d'utilisation / d'automatisation
+
+    Évaluation et comparaisons sur SEAPATH.
+  ]
+})
 
 
 
