@@ -318,6 +318,8 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
 
 #speaker-note[
   Dire que le contenu est très utile pour détecter vulnérabilités (identifiants composants)
+
+  Fichiers JSON trop verbeux pour être montré ici (ouverture)
 ]
 
 = Détection de vulnérabilités sur SEAPATH Yocto
@@ -441,6 +443,19 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
   )),
 )
 
+== Différences entre les approches
+Bases de données de vulnérabilités :
+- _cve-check_ : *NVD* @nist-nvd (National Vulnerability Database) du NIST
+- _sbom-cve-check_ : *NVD* + *CVE#emoji.tm Program* @cvelistv5
+- _Grype_ : *NVD* + Debian Security Tracker @debian-security-tracker + RedHat Security Updates @redhat-security-updates...
+#highlight[Mettre un tableau à la place ?]
+
+#pause
+
+_cve-check_ trop limité (NVD incomplète) :
+- _meta-vulnscout_ (développé par Savoir-faire Linux) rajoute la *BDD de vulnérabilités du noyau Linux* @linux-vulns et celle du *CVE#emoji.tm Program*
+- ajoute classes pour filtrer vulnérabilités du noyau non applicables
+
 == Évaluation des approches
 #meander.reflow({
   import meander: *
@@ -463,9 +478,17 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
 
     - facilité d'utilisation / d'automatisation
 
-    Évaluation et comparaisons sur SEAPATH.
+    Implémentation de 4 scénarios sur SEAPATH et comparaison des résultats :
+    + *basique* : _cve-check_
+    + *léger* : _cve-check_ + BDD noyau
+    + *complet* : _cve-check_ + BDD noyau + filtrage noyau
+    + *externe* : SBOM #sym.arrow _sbom-cve-check_
   ]
 })
+
+#speaker-note[
+  Intentionnellement laissé Grype de côté
+]
 
 
 
@@ -508,9 +531,10 @@ Annexes / Slides de secours (non comptées dans le temps principal)
 - Exemples de règles de filtrage, extraits de SBOM, logs de CI détaillés.
 */
 
-
 ---
 // #magic.bibliography()
 #show bibliography: set heading(outlined: false)
 #set text(size: 16pt)
 #bibliography("../bibliography.yml")
+
+#highlight[TODO: spdx extract]
