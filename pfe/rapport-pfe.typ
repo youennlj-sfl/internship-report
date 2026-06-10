@@ -318,13 +318,6 @@ Enfin, merci à tous les collègues de Rennes pour leur bon accueil et notre int
 
 #pagebreak()
 == Rapport de comparaison des solutions de détection de vulnérabilité <annex:cve-comparison-report>
-Le rapport complet est attaché en pièce jointe à ce PDF.
-#pdf.attach(
-  "../assets/Yocto CVE check report.pdf",
-  description: "Rapport sur les différentes solution de détection de vulnérabilités",
-  mime-type: "application/pdf",
-)
-
 #for i in range(1, 5) {
   block(stroke: 1pt, image("../assets/Yocto CVE check report.pdf", page: i), height: 1fr)
   pagebreak()
