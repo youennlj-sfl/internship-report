@@ -104,7 +104,7 @@
     long: "Common Platform Enumeration",
     longplural: "Common Platform Enumeration",
     description: [
-      Schéma de nommage structuré permettant d'identifier des systèmes informatiques, des logiciels, des paquets ou encore du matériel informatique. Peut contenir beaucoup de détails tel que le distributeur, la langue, etc. (à l'inverse du @PURL)
+      Schéma de nommage structuré permettant d'identifier des systèmes informatiques, des logiciels, des paquets ou encore du matériel informatique. Peut contenir beaucoup de détails tels que le distributeur, la langue, etc. (à l'inverse du @PURL)
     ],
   ),
   (
@@ -136,7 +136,7 @@
     short: "TSC",
     long: "Comité de Pilotage Technique",
     description: [
-      Comité gérant les aspects techniques d'un projet. Il se réunit régulièrement et ses réunions peuvent être ouvertes au public. Sigle issue de l'anglais _Technical Steering Committee_.
+      Comité gérant les aspects techniques d'un projet. Il se réunit régulièrement et ses réunions peuvent être ouvertes au public. Sigle issu de l'anglais _Technical Steering Committee_.
     ],
   ),
   (

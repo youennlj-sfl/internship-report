@@ -6,4 +6,4 @@ Cette expérience sur SEAPATH m'a permis de découvrir le développement dans le
 
 En parallèle, j'ai pu participer au cycle de développement d'un projet logiciel open source, VulnScout, d'une position privilégiée en étant à la fois utilisateur et contributeur du projet. Cela m'a permis de développer de précieuses compétences en collaboration sur un projet agile via les réunions hebdomadaires et les revues de code.
 
-Enfin, j'ai eu la chance d'évoluer dans un environnement d'une très grande compétence technique que j'ai pu un petit peu intégrer grâce aux réunions quotidiennes, aux revues de codes des collègues et aux discussions autour de la table du déjeuner.
+Enfin, j'ai eu la chance d'évoluer dans un environnement d'une très grande compétence technique que j'ai pu en partie acquérir grâce aux réunions quotidiennes, aux revues de code des collègues et aux discussions autour de la table du déjeuner.

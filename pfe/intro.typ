@@ -1,6 +1,6 @@
 = Introduction <chapter:introduction>
 
-Aujourd'hui, les infrastructures énergétiques évoluent rapidement, largement influencées par l'adoption croissante des énergies renouvelables, qui représentent désormais 15,8% de la consommation d'énergie primaire en 2025, par rapport à seulement 9,6% onze ans auparavant @sdes-2025. Cette transition entraîne un changement majeur dans la gestion des réseaux électriques, passant d'un modèle
+Aujourd'hui, les infrastructures énergétiques évoluent rapidement, largement influencées par l'adoption croissante des énergies renouvelables, qui représentent désormais 15,8~% de la consommation d'énergie primaire en 2025, par rapport à seulement 9,6~% onze ans auparavant @sdes-2025. Cette transition entraîne un changement majeur dans la gestion des réseaux électriques, passant d'un modèle
 traditionnellement statique et unidirectionnel à un paradigme plus dynamique et imprévisible.
 
 Au cœur de cette mutation se trouve la nécessité de repenser les systèmes de contrôle et d'automatisation, notamment en migrant des dispositifs physiques appelés @ied vers des versions virtuelles. Cette transition s'avère indispensable pour surmonter les défis associés aux coûts élevés d'exploitation et de déploiement des équipements physiques, ainsi qu'aux cycles de développement et de mise à jour complexes et chronophages.
@@ -43,10 +43,10 @@ Pour collaborer efficacement, chaque projet est versionné dans des dépôts _Gi
 L'intégration continue, ou @CI, ajoute un deuxième filet de sécurité. C'est un ensemble de services automatisés pour compiler et tester du code. L'entreprise utilise l'application Jenkins @jenkins pour les projets utilisant _Gerrit_, ou bien le système _GitHub Actions_ @github-actions pour les autres. À chaque nouveau commit ou @PR, un cycle de @CI commence et va effectuer diverses tâches : compiler le projet, lancer des tests, etc. Cela augmente les chances de détecter une régression, de rapidement régler les bugs, et d'éviter une longue investigation de problème plus tard. Sur des projets applicatifs, des tests d'analyse statique du code permettent aussi de maintenir une bonne qualité de code.
 
 En parallèle, #sfl développe et maintient plusieurs outils facilitant le développement des projets. Ces outils sont utilisés en interne mais sont également disponibles en @opensource. Parmi les plus importants, on peut noter :
-- _CQFD_ @cqfd, permet de facilement lancer des commandes dans un @conteneur ayant accès au dossier courant. Il est notamment utilisé pour configurer et utiliser le projet Yocto avec ses nombreuses dépendances, peu importe l'environnement d'exécution.
+- _CQFD_ @cqfd, permet de lancer facilement des commandes dans un @conteneur ayant accès au dossier courant. Il est notamment utilisé pour configurer et utiliser le projet Yocto avec ses nombreuses dépendances, peu importe l'environnement d'exécution.
 - _Cukinia_ @cukinia, un outil de test pour vérifier la configuration d'un système Linux au runtime : présence d'utilisateurs, de partitions de système de fichier, de programmes, de périphériques... Il permet d'appliquer une méthodologie de développement piloté par les tests pour l'intégration d'un système Linux complet.
 
-Concernant l'organisation interne, les informations importantes sont diffusées par e-mails. Pour le quotidien, une instance _Mattermost_ est utilisée comme plateforme de communication instantanée. La majorité du travail est faite en présentiel, mais il arrive de faire des réunions par visioconférence, notamment avec l'équipe de Montréal, notamment lorsque les deux bureaux travaillent sur des projets communs.
+Concernant l'organisation interne, les informations importantes sont diffusées par e-mails. Pour le quotidien, une instance _Mattermost_ est utilisée comme plateforme de communication instantanée. La majorité du travail est faite en présentiel, mais il arrive de faire des réunions par visioconférence, notamment avec l'équipe de Montréal lorsque les deux bureaux travaillent sur des projets communs.
 
 == Le projet SEAPATH
 === Le réseau électrique
@@ -60,16 +60,16 @@ Dans un poste de transformation on trouve de nombreux équipements (@fig:context
   placement: auto,
 ) <fig:context:substation-model>
 
-Le *bâtiment de contrôle* (10) abrite des équipement assurant la gestion de ces composants. Les systèmes de contrôle et d'automatisation des réseaux électriques jouent un rôle crucial dans cette gestion, en intégrant des technologies avancées pour superviser et optimiser la distribution de l'énergie. Parmi ces technologies, les @ied:pl occupent une place centrale.
+Le *bâtiment de contrôle* (10) abrite des équipements assurant la gestion de ces composants. Les systèmes de contrôle et d'automatisation des réseaux électriques jouent un rôle crucial dans cette gestion, en intégrant des technologies avancées pour superviser et optimiser la distribution de l'énergie. Parmi ces technologies, les @ied:pl occupent une place centrale.
 
 Un @ied est un élément clé d'un poste électrique, remplaçant les relais traditionnels et autres appareils par des dispositifs dotés de microprocesseurs et de communications avancées. Il protège les lignes, génère des événements, gère les régulateurs de tension et collecte des données critiques, permettant une prise de décision rapide pour la protection et la restauration du réseau. @mcdonald2007substation
 
 === Les limites du modèle actuel
 Aujourd'hui, en raison principalement de l'essor des énergies renouvelables, intégrant ainsi des sources d'énergie aux moyennes et basses tensions, on passe d'un modèle statique et unidirectionnel du réseau vers un modèle beaucoup plus dynamique et imprévisible, qu'on appelle @smart-grid.
 
-Le cycle de développement des systèmes de contrôle et d'automatisation des réseaux électriques est donc en pleine transformation. Il est nécessaire de porter le code développé pour les @ied:pl physiques vers des @ied:pl virtuels. Les dispositifs physiques ont des coûts opérationnels et de déploiement élevés, avec des cycles de développement, de test et de mise à jour complexes et longs. Pour relever ces défis, un tournant dans la conception des systèmes s'impose. La virtualisation des fonctionnalités, en se détachant des implémentations dépendantes du matériel, facilite la transition d'un réseau électrique traditionnel vers une smart grid orienté logiciel @en15249362.
+Le cycle de développement des systèmes de contrôle et d'automatisation des réseaux électriques est donc en pleine transformation. Il est nécessaire de porter le code développé pour les @ied:pl physiques vers des @ied:pl virtuels. Les dispositifs physiques ont des coûts opérationnels et de déploiement élevés, avec des cycles de développement, de test et de mise à jour complexes et longs. Pour relever ces défis, un tournant dans la conception des systèmes s'impose. La virtualisation des fonctionnalités, en se détachant des implémentations dépendantes du matériel, facilite la transition d'un réseau électrique traditionnel vers une @smart-grid orientée logiciel @en15249362.
 
-C'est dans ce tournant que s'inscrit le projet SEAPATH (Software Enabled Automation Platform and Artifacts), une initiative de la Linux Foundation Energy qui vise à développer une plateforme *@opensource* et *@RT:long* qui permettra d'exécuter la *virtualisation d'@ied:pl* provenant de divers fournisseurs du secteur de l'énergie avec de fortes contraintes de *fiabilité et disponibilité*. Les co-mainteneurs du projet sont #sfl et RTE international.
+C'est dans ce tournant que s'inscrit le projet SEAPATH (Software Enabled Automation Platform and Artifacts), une initiative de la Linux Foundation Energy qui vise à développer une plateforme *@opensource* et *@RT:long* qui permettra d'exécuter la *virtualisation d'@ied:pl* provenant de divers fournisseurs du secteur de l'énergie avec de fortes contraintes de *fiabilité* et de *disponibilité*. Les co-mainteneurs du projet sont #sfl et RTE international.
 
 === La virtualisation <chapter:context:seapath:virt>
 La *virtualisation* regroupe les techniques matérielles et/ou logicielles qui permettent à une seule machine d'exécuter plusieurs systèmes d'exploitation et/ou applications de manière isolée, comme s'ils tournaient sur des machines distinctes. Pour ce faire, on utilise un @hyperviseur. Celui-ci agit comme une couche intermédiaire entre le matériel de la machine hôte et les systèmes d'exploitation invités, souvent appelés @VM:pl.
@@ -81,7 +81,7 @@ La virtualisation offre de nombreux avantages :
 SEAPATH utilise le module noyau KVM @kivity2007kvm, permettant de convertir l'OS en un @hyperviseur dit "de type 1", ce qui signifie que les @VM:pl s'exécutent directement sur le matériel, sans traverser le système d'exploitation hôte. De plus, SEAPATH utilise QEMU @qemu en conjonction avec KVM. Dans cette configuration, KVM se charge des interactions avec le matériel tandis que QEMU émule les périphériques et gère l'environnement de la @VM. Enfin, libvirt @libvirt est utilisé pour gérer et orchestrer les @VM:pl.
 
 === Architecture de SEAPATH <chapter:context:seapath:architecture>
-L'achitecture générale de SEAPATH est présentée en @fig:context:seapath-stack :
+L'architecture générale de SEAPATH est présentée en @fig:context:seapath-stack :
 #figure(
   image("../assets/seapath_technology_stack.png", width: 80%),
   caption: [Architecture générale de SEAPATH],
@@ -94,7 +94,7 @@ En plus de la couche de virtualisation décrite au @chapter:context:seapath:virt
 - _Open vSwitch_ @openvswitch, une implémentation logicielle d'un switch ethernet.
 - _Pacemaker_ @pacemaker, chargé de démarrer, arrêter et superviser les ressources du cluster.
 - _Corosync_ @corosync, un système de communication de groupe.
-- _Ceph_ @ceph, un solution de stockage distribué.
+- _Ceph_ @ceph, une solution de stockage distribué.
 Lorsque SEAPATH est installé sur plusieurs @hyperviseur:pl, ces outils orchestrent le déploiement des @VM:pl sur les machines adéquates et permettent de les déplacer en cas de besoin, mais surtout de les redémarrer sur une autre machine si la leur tombe en panne.
 
 === Génération et déploiement <chapter:context:seapath:generation>
@@ -107,8 +107,8 @@ Enfin, on utilise Ansible @hochstein2017ansible, un outil d'automatisation, pour
 //== Objectifs du PFE
 === Aspects de cybersécurité
 
-Actuellement, le projet SEAPATH ne propose pas de moyen simple à ses utilisateurs pour suivre les vulnérabilités logicielles présentes dans le système. Les mainteneurs eux-même n'ont pas connaissance de celles-ci, ce qui est un grave problème, SEAPATH étant destiné à terme à être utilisé dans des infrastructures critiques où une vulnérabilité grave peut priver d'électricité des millions de foyers et causer de graves dommages.
+Actuellement, le projet SEAPATH ne propose pas de moyen simple à ses utilisateurs pour suivre les vulnérabilités logicielles présentes dans le système. Les mainteneurs eux-mêmes n'ont pas connaissance de celles-ci, ce qui est un grave problème, SEAPATH étant destiné à terme à être utilisé dans des infrastructures critiques où une vulnérabilité grave peut priver d'électricité des millions de foyers et causer de graves dommages.
 
-De plus, le monde de la cybersécurité s'accélère depuis quelques années. Les vulnérabilités découvertes sont de plus en plus nombreuses, et les organisations étatiques et même internationales commencent à légiférer pour obliger les fournisseurs de solutions numériques à se préoccuper de ces questions. Par exemple, l'Union Européenne a créé le Cyber Resilience Act (CRA) @cra-article qui prendra effet en 2027, d'où l'intérêt pour les mainteneurs de SEAPATH d'agir maintenant. Le stage effectué s'inscrit dans ce contexte, pour permettre à SEAPATH de se doter des outils nécessaires pour suivre les vulnérabilités potentiellement dangereuses.
+De plus, le monde de la cybersécurité s'accélère depuis quelques années. Les vulnérabilités découvertes sont de plus en plus nombreuses, et les organisations étatiques et même internationales commencent à légiférer pour obliger les fournisseurs de solutions numériques à se préoccuper de ces questions. Par exemple, l'Union européenne a créé le Cyber Resilience Act (CRA) @cra-article qui prendra effet en 2027, d'où l'intérêt pour les mainteneurs de SEAPATH d'agir maintenant. Le stage effectué s'inscrit dans ce contexte, pour permettre à SEAPATH de se doter des outils nécessaires pour suivre les vulnérabilités potentiellement dangereuses.
 
 // == Le projet VulnScout
