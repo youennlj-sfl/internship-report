@@ -185,6 +185,8 @@ Fin du plan
     #text(size: 1.2em, weight: "extrabold")[Quelles vulnérabilités ?]
 
     SEAPATH destiné à des infrastructures _critiques_ !
+
+    Législations : CRA (UE) /\ #h(1em) Exec. Order 14028 (USA)
   ],
 )
 
@@ -277,20 +279,99 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
   caption: [Processus de détection des vulnérabilités],
 )
 
+== Les SBOMs
+#v(-1.5em)
+#text(size: 0.92em, quote(
+  block: true,
+  attribution: [UE 2024/2847],
+)[_Source Bills of Materials_ / Nomenclatures Logicielles : Document contenant les *détails* et les *relations* avec la chaîne d’approvisionnement des différents *composants* utilisés dans la fabrication d’un produit comportant des éléments numériques.])
+
+#cols(columns: (1fr, auto))[
+  - Requis par les futures législations (CRA @cra-article)
+
+  - Contenu :
+    - *composants* : nom, versions, licences, etc.
+    - *fichiers*
+    - *relations* : contient / dépend de / décrit par / ...
+
+  - Interopérable, outils de *génération automatique*
+
+  - Formats standards : SPDX, CycloneDX
+][
+  #grid(
+    columns: 9cm,
+    rows: 2,
+    gutter: 1em,
+    figure(
+      image("../assets/spdx-logo.png"),
+      caption: [Standard ISO\ (Linux Foundation)],
+    ),
+    figure(image("../assets/cyclonedx-logo.png"), caption: [Standard ecma\ (OWASP)]),
+  )
+]
+
+#speaker-note[
+  Dire que le contenu est très utile pour détecter vulnérabilités (identifiants composants)
+]
+
+= Détection de vulnérabilités sur SEAPATH Yocto
+#import "@preview/meander:0.4.3"
+== Environnement technique : Yocto
+#meander.reflow({
+  import meander: *
+
+  placed(top + right, figure(image("../assets/Yocto_Project_logo.svg", width: 7cm)))
+
+  container()
+
+  content[
+    - Projet open source, Fondation Linux
+    - Ensemble d'outils pour créer des *distributions Linux embarquées*
+    #v(1em)
+    Construction du système avec BitBake :
+    - Image construite _from scratch_ : *compiler les sources*, empaqueter, etc.
+    - Décrit entièrement *via du code*
+      - tout est connu : programmes, librairies, fichiers compilés...
+      - *facile de générer un SBOM*
+  ]
+})
+#pause
+#figure(
+  text(size: 17pt, fletcher.diagram(
+    node-stroke: 1pt,
+    node-inset: 0.5em,
+    node-fill: insa-colors.tertiary.lighten(50%),
+    spacing: 2em,
+    {
+      import fletcher: *
+
+      node((0, 0), width: 4.5cm, height: 3cm)[Récupération des sources]
+      edge("-|>")
+      node((1, 0), width: 4.5cm, height: 3cm)[Compilation des paquets]
+      edge("-|>")
+      node((2, 0), width: 4.5cm, height: 3cm)[Génération du système de fichiers]
+      edge("-|>")
+      node((3, 0), width: 4.5cm, height: 3cm)[Création de l'image]
+    },
+  )),
+  caption: [Processus de construction d'une image avec Yocto],
+)
+
+#speaker-note[
+  Parler de l'embarqué
+
+  Décrire "image"
+
+  On connaît les versions des programmes puisque c'est dans le code : nickel pour SBOM
+
+  Aucun binaire opaque inclus
+]
+
+== Étude des approches de détection de vulnérabilités
+
+
 
 /*
-
-Slide 4 — Environnement technique (Yocto vs Debian) (3:00)
-- Contenu: Présenter brièvement Yocto (build système embarqué, couches, recettes) vs Debian (paquets .deb, gestion de paquets), contraintes (reproductibilité, cross-compilation), impact sur détection des vulnérabilités.
-- Figures: tableau comparatif Yocto vs Debian (2–3 lignes), diagramme simplifié montrant où et comment chaque variante est construite.
-
-Slide 5 — Méthodologie générale (2:00)
-- Contenu: Étapes suivies: collecte des artefacts (SBOMs / packages), normalisation des données, enrichissement (CPE/PURL), matching CVE, filtrage / heuristiques pour réduire faux positifs, intégration CI.
-- Figures: workflow linéaire (collecte → normalisation → matching → reporting → CI).
-
-Slide 6 — Détection basée sur SBOM (3:00)
-- Contenu: Expliquer ce qu'est un SBOM, ses avantages et limites pour SEAPATH, comment il est généré (outils utilisés), contraintes pour Yocto (noms de paquets, métadonnées manquantes).
-- Figures: extrait de SBOM (exemple PURL/CPE), schéma montrant génération de SBOM dans pipeline.
 
 Slide 7 — Comparaison des approches testées (3:00)
 - Contenu: Approches évaluées (parsing des images, SBOM, analyse des métadonnées, outils existants : Vulnerability scanners, Dependency-Track, VulnScout). Critères: précision, taux de faux positifs, intégrabilité CI, maintenance.
