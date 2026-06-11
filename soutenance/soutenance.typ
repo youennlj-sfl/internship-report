@@ -106,6 +106,7 @@ Fin du plan
 
 #set text(lang: "fr")
 #show figure.caption: set text(size: 17pt)
+#show table: set text(size: 18pt)
 
 #show: insa-slides.with(
   title: "Soutenance de PFE",
@@ -343,6 +344,15 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
       - *facile de générer un SBOM*
   ]
 })
+#speaker-note[
+  Parler de l'embarqué
+
+  Décrire "image"
+
+  On connaît les versions des programmes puisque c'est dans le code : nickel pour SBOM
+
+  Aucun binaire opaque inclus
+]
 #pause
 #figure(
   text(size: 17pt, fletcher.diagram(
@@ -365,15 +375,6 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
   caption: [Processus de construction d'une image avec Yocto],
 )
 
-#speaker-note[
-  Parler de l'embarqué
-
-  Décrire "image"
-
-  On connaît les versions des programmes puisque c'est dans le code : nickel pour SBOM
-
-  Aucun binaire opaque inclus
-]
 
 == Étude des approches de détection de vulnérabilités
 
@@ -444,29 +445,45 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
 )
 
 == Différences entre les approches
-Bases de données de vulnérabilités :
-- _cve-check_ : *NVD* @nist-nvd (National Vulnerability Database) du NIST
-- _sbom-cve-check_ : *NVD* + *CVE#emoji.tm Program* @cvelistv5
-- _Grype_ : *NVD* + Debian Security Tracker @debian-security-tracker + RedHat Security Updates @redhat-security-updates...
-#highlight[Mettre un tableau à la place ?]
 
+#figure(table(
+  columns: 5,
+  align: (x, y) => if x == 0 { left } else { center },
+  inset: 0.5em,
+  [Base de donnée\ \\ approche],
+  [*NVD* @nist-nvd\ (NIST)],
+  [*CVE#emoji.tm Program* \ @cvelistv5],
+  [*Noyau Linux*\ @linux-vulns],
+  [*Distributions*\ (Debian, RedHat...)],
+
+  [*cve-check*], sym.checkmark, sym.crossmark, sym.crossmark, sym.crossmark,
+  pause,
+  // no folding
+  [#sym.arrow.t *meta-vulnscout*], sym.checkmark, sym.checkmark, sym.checkmark, sym.crossmark,
+  meanwhile,
+  // no folding
+  [*sbom-cve-check*], sym.checkmark, sym.checkmark, sym.crossmark, sym.crossmark,
+  [*Grype*], sym.checkmark, sym.crossmark, sym.crossmark, sym.checkmark,
+))
+
+_cve-check_ *très limité* (NVD incomplète)
 #pause
 
-_cve-check_ trop limité (NVD incomplète) :
-- _meta-vulnscout_ (développé par Savoir-faire Linux) rajoute la *BDD de vulnérabilités du noyau Linux* @linux-vulns et celle du *CVE#emoji.tm Program*
-- ajoute classes pour filtrer vulnérabilités du noyau non applicables
+#sym.arrow.double _meta-vulnscout_ (développé par Savoir-faire Linux) :
+- rajoute *2 bases* (CVE#emoji.tm et noyau Linux)
+- ajoute classes pour *filtrer vulnérabilités du noyau* non applicables
 
 == Évaluation des approches
 #meander.reflow({
   import meander: *
 
-  placed(top + right, figure(text(size: 18pt, table(
+  placed(top + right, figure(table(
     columns: 3,
     inset: 0.5em,
     [], [Vuln.\ trouvée], [Vuln.\ applicable],
     [Faux positif], [#sym.checkmark], [#sym.crossmark],
     [Faux négatif], [#sym.crossmark], [#sym.checkmark],
-  ))))
+  )))
 
   container()
 
@@ -477,11 +494,11 @@ _cve-check_ trop limité (NVD incomplète) :
     - taux de *faux positifs / faux négatifs*
 
     - facilité d'utilisation / d'automatisation
-
-    Implémentation de 4 scénarios sur SEAPATH et comparaison des résultats :
+    #v(1em)
+    4 scénarios #sym.arrow.double comparaison des résultats :
     + *basique* : _cve-check_
-    + *léger* : _cve-check_ + BDD noyau
-    + *complet* : _cve-check_ + BDD noyau + filtrage noyau
+    + *léger* : _cve-check_ + BDDs supplémentaires
+    + *complet* : _cve-check_ + BDDs supplémentaires + filtrage noyau
     + *externe* : SBOM #sym.arrow _sbom-cve-check_
   ]
 })
@@ -490,7 +507,41 @@ _cve-check_ trop limité (NVD incomplète) :
   Intentionnellement laissé Grype de côté
 ]
 
+== Résultats de la comparaison
+#import "@preview/pinit:0.2.2": *
+#cols(columns: (14cm, 1fr))[
+  #figure(
+    {
+      place(dy: 0.1cm, dx: -0.4cm, pin(1))
+      place(dy: 1.5cm, dx: 1.5cm, pin(2))
+      place(dy: 1.1cm, dx: 0.5cm, pin(3))
+      image("../assets/comparison-chart.svg", width: 100%)
+    },
+    caption: [Vulnérabilités détectées par scénario],
+  )
+  #pinit-highlight(1, 2, dy: 0pt, stroke: (dash: "dashed"))
+  /*#pinit-point-from(3, pin-dy: -1cm, offset-dy: -1.5cm, body-dx: 0.3cm, body-dy: -0.4cm, thickness: 1.5pt)[#text(
+    size: 18pt,
+  )[Attention axe Y]]*/
 
+  #speaker-note[
+    Attention axe Y
+  ]
+
+  #set text(size: 18pt)
+  - Beaucoup de _non affecté_ (jaune) = mieux
+  - Peu de _à évaluer_ (rouge) = mieux
+][
+  #pause
+  - _cve-check_ basique : peu performant
+    - beaucoup de faux négatifs
+  - _cve-check_ + meta-seapath : mieux
+    - faux positifs
+  - *_sbom-cve-check_ : le meilleur*
+
+  #v(1em)
+  Principale différence : traitement des vulnérabilités noyau (20% - entre léger/complet)
+]
 
 /*
 
