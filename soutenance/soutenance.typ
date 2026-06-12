@@ -107,6 +107,24 @@ Fin du plan
 #set text(lang: "fr")
 #show figure.caption: set text(size: 17pt)
 #show table: set text(size: 18pt)
+#show "=>": sym.arrow.double
+
+#import "@preview/zebraw:0.6.3": zebraw, zebraw-init
+
+#let zebra-theme = (
+  background-color: (luma(240), luma(247)),
+  highlight-color: insa-colors.tertiary.lighten(60%),
+  comment-color: blue.lighten(93%),
+)
+#show: zebraw-init.with(
+  numbering-separator: false,
+  numbering: false,
+  hanging-indent: true,
+  comment-color: blue.lighten(85%),
+  ..zebra-theme,
+)
+#set raw(syntaxes: ("../BitBake.sublime-syntax",))
+#show raw.where(block: true): set text(size: 11pt)
 
 #show: insa-slides.with(
   title: "Soutenance de PFE",
@@ -135,6 +153,7 @@ Fin du plan
 )
 
 #import "@preview/fletcher:0.5.8"
+#let fletcher-diagram = touying-reduce.with(fletcher)
 
 = Contexte et enjeux
 //== Les postes électriques et leur transition
@@ -230,7 +249,7 @@ Fin du plan
   - *Montréal*, +50 collaborateurs, logiciels open source
   - *Rennes*, \~15 collaborateurs (majorité d'ingénieurs en informatique), spécialisé Linux embarqué
 
-  Engagé activement dans l'open source : salons, contributions à de grands projets, e.g. Yocto @yoctoproject.
+  //Engagé activement dans l'open source : salons, contributions à de grands projets, e.g. Yocto @yoctoproject.
 ][
   #figure(image("../assets/savoirfairelinux_logo.png", width: 100%), caption: [Logo de l'entreprise])
   #v(2em)
@@ -239,10 +258,10 @@ Fin du plan
 
 //== Environnement technique
 
-== Méthodologie générale de détection des vulnérabilités
-SEAPATH #sym.approx distribution Linux : *centaines de composants*
+== Méthodologie générale
+Problème : SEAPATH #sym.approx distribution Linux : *centaines de composants*
 
-#sym.arrow.double *impossible* de détecter les failles dans le code (surface trop grande)
+=> *impossible* de détecter les failles dans le code (surface trop grande)
 
 #pause
 #v(1em)
@@ -323,7 +342,6 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
   Fichiers JSON trop verbeux pour être montré ici (ouverture)
 ]
 
-= Détection de vulnérabilités sur SEAPATH Yocto
 #import "@preview/meander:0.4.3"
 == Environnement technique : Yocto
 #meander.reflow({
@@ -338,7 +356,7 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
     - Ensemble d'outils pour créer des *distributions Linux embarquées*
     #v(1em)
     Construction du système avec BitBake :
-    - Image construite _from scratch_ : *compiler les sources*, empaqueter, etc.
+    //    - Image construite _from scratch_ : *compiler les sources*, empaqueter, etc.
     - Décrit entièrement *via du code*
       - tout est connu : programmes, librairies, fichiers compilés...
       - *facile de générer un SBOM*
@@ -375,8 +393,8 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
   caption: [Processus de construction d'une image avec Yocto],
 )
 
-
-== Étude des approches de détection de vulnérabilités
+= Détection de vulnérabilités sur SEAPATH Yocto
+== Approches de détection de vulnérabilités
 
 #cols(
   columns: (1fr, 4cm),
@@ -395,11 +413,11 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
       {
         import fletcher: *
 
-        node((0, 0), width: 4.5cm, height: 2.5cm)[Chargement du SBOM]
+        node((0, 0), width: 5cm, height: 2.5cm)[Téléchargement des BDD]
         edge("-|>")
-        node((1, 0), width: 5cm, height: 2.5cm)[Téléchargement des BDD]
+        node((1, 0), width: 4.5cm, height: 2.5cm)[Chargement du SBOM]
         edge("-|>")
-        node((2, 0), width: 5cm, height: 2.5cm)[Mise en correspondance]
+        node((2, 0), width: 5cm, height: 2.5cm)[Mise en correspondance avec BDD]
         edge("-|>")
         node((3, 0), width: 4.5cm, height: 2.5cm)[Export des résultats]
       },
@@ -469,9 +487,9 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
 _cve-check_ *très limité* (NVD incomplète)
 #pause
 
-#sym.arrow.double _meta-vulnscout_ (développé par Savoir-faire Linux) :
+=> _meta-vulnscout_
 - rajoute *2 bases* (CVE#emoji.tm et noyau Linux)
-- ajoute classes pour *filtrer vulnérabilités du noyau* non applicables
+- filtre *vulnérabilités du noyau non applicables*
 
 == Évaluation des approches
 #meander.reflow({
@@ -495,7 +513,7 @@ _cve-check_ *très limité* (NVD incomplète)
 
     - facilité d'utilisation / d'automatisation
     #v(1em)
-    4 scénarios #sym.arrow.double comparaison des résultats :
+    4 scénarios => comparaison des résultats :
     + *basique* : _cve-check_
     + *léger* : _cve-check_ + BDDs supplémentaires
     + *complet* : _cve-check_ + BDDs supplémentaires + filtrage noyau
@@ -509,7 +527,7 @@ _cve-check_ *très limité* (NVD incomplète)
 
 == Résultats de la comparaison
 #import "@preview/pinit:0.2.2": *
-#cols(columns: (14cm, 1fr))[
+#slide(composer: (14cm, 1fr))[
   #figure(
     {
       place(dy: 0.1cm, dx: -0.4cm, pin(1))
@@ -533,25 +551,188 @@ _cve-check_ *très limité* (NVD incomplète)
   - Peu de _à évaluer_ (rouge) = mieux
 ][
   #pause
+  Principale différence = filtre sur *vulnérabilités noyau* :
+  - -20% léger => complet
+  - -58% complet => externe
+
+  Résultats:
   - _cve-check_ basique : peu performant
     - beaucoup de faux négatifs
   - _cve-check_ + meta-seapath : mieux
     - faux positifs
   - *_sbom-cve-check_ : le meilleur*
+    - facile d'utilisation
 
-  #v(1em)
-  Principale différence : traitement des vulnérabilités noyau (20% - entre léger/complet)
+  #speaker-note[
+    _sbom-cve-check_ utilisable en CI car hors de Yocto
+  ]
+
+  => tout détaillé dans un *rapport*
+
+  #speaker-note[
+    Rapport => utile pour chiffrer offres client
+  ]
+]
+
+== Analyse des vulnérabilités remontées
+#slide(composer: (15cm, 1fr))[
+  #figure(
+    image("../assets/vs_vulnerabilities.png", width: 100%),
+    caption: [Interface de VulnScout],
+  )
+][
+  - \~130 vulnérabilités détectées
+  - filtre sur les plus importantes avec seuils :
+
+  $
+    "CVSS"^#footnote[CVSS : *gravité* d'une vulnérabilité, de 0 à 10] >= 9.0 \
+    "ou" \
+    "CVSS" >= 7.0 and "EPSS"^#footnote[EPSS : *exploitabilité* d'une vulnérabilité, de 0 à 100%] >= 50%
+  $
+
+  #speaker-note[
+    Choix fait avec tuteur + concertation avec qqun qui s'y connaît + sera ré-étudié lors du comité de pilotage technique (R&D pour le moment)
+  ]
+
+  #pause
+  #v(2em)
+  - Reste \~15 vulnérabilités : majorité *faux positifs*
+]
+
+== Correction des faux positifs
+#slide(composer: (1fr, 1.2fr))[
+  #figure(
+    zebraw(
+      ```BitBake
+      # recipes-connectivity/inetutils
+      CVE_STATUS[CVE-2026-32746] = "not-applicable-config: telnetd not included in SEAPATH"
+
+      # recipes-extended/libvirt
+      CVE_STATUS[CVE-2018-6764] = "fixed-version: Fixed in 4.1.0, NVD tracks this as version-less vulnerability"
+      # ...et plein d'autres
+      ```,
+    ),
+    caption: [Annotations de vulnérabilités],
+  ) <fig:yocto:analysis:cve_status>
+  #jump(3)
+  #line(length: 100%)
+  => Annotations type `fixed-version` #link("https://git.yoctoproject.org/meta-virtualization/commit/?id=88e29d1f7f097dfa121935907b9c843599f81e38")[*contribuées* au projet Yocto]
+
+][
+  #jump(2)
+  #figure(
+    image("../assets/vs_vuln_modal.png", width: 100%),
+    caption: [Vulnérabilité sur VulnScout],
+  )
+  #place(top + left, dx: 0%, dy: 70%, rect(stroke: red + 3pt, radius: 4pt, width: 50%, height: 18%))
+]
+
+== Automatisation via Intégration Continue (CI)
+#pause
++ Ré-écriture du pipeline de construction sur GitHub Actions @github-actions
+#speaker-note[
+  Évoquer synchronisation entre dépôts
+]
+
+#pause
++ Détection des vulnérabilités
+  - avec _sbom-cve-check_
+
+#pause
++ Génération de rapports affichés dans les Pull Requests
+  - avec _VulnScout_
+
+#meanwhile
+#figure(
+  text(size: 17pt, fletcher-diagram(
+    node-stroke: 1pt,
+    node-inset: 0.5em,
+    node-fill: insa-colors.tertiary.lighten(50%),
+    spacing: 1.5em,
+    {
+      import fletcher: *
+
+      node((0, 0), width: 4.5cm, height: 2.5cm)[Pull Request ouverte]
+      edge("-|>")
+      pause
+      node((1, 0), width: 4.5cm, height: 2.5cm)[Récupération des sources de la PR]
+      edge("-|>")
+      node((2, 0), width: 4.5cm, height: 2.5cm)[Construction images & SBOMs]
+      edge((2, 0), (2, 0.5), (0, 0.5), (0, 1), "-|>")
+      pause
+      node((0, 1), width: 4.5cm, height: 2.5cm)[Détection des vulnérabilités]
+      edge("-|>")
+      pause
+      node((1, 1), width: 4.5cm, height: 2.5cm)[Génération de rapports /\ vérif. seuils]
+      edge("-|>")
+      node(
+        (2, 1),
+        width: 4.5cm,
+        height: 2.5cm,
+      )[Écriture d'un commentaire sur la PR]
+    },
+  )),
+  caption: [Processus de la CI pour une Pull Request],
+)
+
+== Intégration Continue : Rapports et commentaires
+#slide(composer: (1.5fr, 1fr))[
+  #figure(
+    image("../assets/gh_workflow_cve_annotations.png"),
+    caption: [Vulnérabilités dépassant les seuils affichées dans le résumé de la CI],
+  )
+][
+  #figure(
+    image("../assets/gh_pr_comment.png"),
+    caption: [Commentaire automatique sur la Pull Request],
+  )
+]
+
+= Détection de vulnérabilités sur SEAPATH Debian
+#meander.reflow({
+  import meander: *
+
+  placed(top + right, figure(image("../assets/Debian_logo.png", width: 6cm)))
+
+  container()
+
+  content[
+    - Autre version de SEAPATH basée sur la distribution Debian @debian
+
+    - Moins complexe
+  ]
+})
+
+= VulnScout
+==
+
+
+= Conclusion
+- SEAPATH Yocto :
+  - *Étude et rapport* sur approches de *détection de vulnérabilités*
+  - *Implémentation* de la meilleure solution
+  - *Ré-écriture de l'intégration continue* dans GitHub Actions
+  - *Automatisation* de la détection
+
+- SEAPATH Debian :
+  - *Implémentation* d'une solution de détection de vulnérabilités
+  - Ajout dans l'*intégration continue*
+
+- _À faire_ : seuils, décider quoi faire des vulnérabilités détectées
+
+- VulnScout :
+  - *Contributions* pour résoudre problèmes lors de l'utilisation
+  - Amélioration de la *qualité du code*
+  - *Comparaison* avec outil concurrent
+
+#speaker-note[
+  Plan personnel :
+  - travailler sur projets open source au sein d'une entreprise = bonne expérience
+  - opportunité de contribuer à un grand projet open source (Yocto)
+  - intégré à une équipe de haute compétence
 ]
 
 /*
-
-Slide 7 — Comparaison des approches testées (3:00)
-- Contenu: Approches évaluées (parsing des images, SBOM, analyse des métadonnées, outils existants : Vulnerability scanners, Dependency-Track, VulnScout). Critères: précision, taux de faux positifs, intégrabilité CI, maintenance.
-- Figures: tableau synthétique comparant approches par critères, extrait du rapport annexé (capture d'une page de comparaison) ou graphique radar.
-
-Slide 8 — Implémentation SEAPATH Yocto (2:30)
-- Contenu: Ce qui a été concretement modifié pour Yocto : génération SBOM, adaptation des recipes, pipeline CI (où lancer l'analyse), exemples de problèmes rencontrés (naming, versions mis-reportées).
-- Figures: diagramme CI (jobs Yocto → génération SBOM → VulnScout/outil → rapport), capture d'écran d'un job CI pertinent.
 
 Slide 9 — Implémentation SEAPATH Debian (2:00)
 - Contenu: Processus pour Debian : génération SBOM à partir des paquets, intégration dans CI de packaging, différences majeures avec Yocto.
@@ -588,4 +769,11 @@ Annexes / Slides de secours (non comptées dans le temps principal)
 #set text(size: 16pt)
 #bibliography("../bibliography.yml")
 
+== Intégration Continue : Synchronisation entre dépôts
+#figure(
+  image("../assets/yocto-ci-full.svg", width: 18cm),
+  caption: [Relations entre les pipelines de CI de SEAPATH Yocto],
+)
+
+== SPDX
 #highlight[TODO: spdx extract]
