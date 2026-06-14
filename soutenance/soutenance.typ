@@ -126,6 +126,26 @@ Fin du plan
 #set raw(syntaxes: ("../BitBake.sublime-syntax",))
 #show raw.where(block: true): set text(size: 11pt)
 
+#import "@preview/lilaq:0.6.0" as lq
+#let french-months = (
+  "Janvier",
+  "Février",
+  "Mars",
+  "Avril",
+  "Mai",
+  "Juin",
+  "Juillet",
+  "Août",
+  "Septembre",
+  "Octobre",
+  "Novembre",
+  "Décembre",
+)
+#show: lq.tick-format.set-datetime-smart-format(
+  month: dt => french-months.at(dt.month() - 1),
+)
+#show lq.selector(lq.diagram): set text(18pt)
+
 #show: insa-slides.with(
   title: "Soutenance de PFE",
   title-visual: pad(top: 155pt, left: -20pt, block(
@@ -159,7 +179,7 @@ Fin du plan
 = Contexte et enjeux
 //== Les postes électriques et leur transition
 == Le réseau électrique en transformation
-- Consommation d'énergies renouvelables +65% en 11 ans @sdes-2025
+- Consommation d'énergies renouvelables +65% en France en 11 ans @sdes-2025
   - Besoin de *repenser gestion du réseau électrique* : _smart grids_
 #figure(
   image("../assets/Electrical_substation_model_(side-view).png", height: 30%),
@@ -221,7 +241,7 @@ Fin du plan
 //  - Les inclure dans les pipelines d'intégration continue
 
 - *Analyser* les vulnérabilités remontées
-  - En utilisant le projet *VulnScout* @vulnscout de Savoir-faire Linux
+  - En utilisant et contribuant au projet *VulnScout* @vulnscout
 //  - Les corriger si possible
 //  - Réduire le nombre de faux positifs
 #speaker-note[
@@ -740,9 +760,90 @@ _cve-check_ *très limité* (NVD incomplète)
 
   - Données stockées dans une BDD relationnelle
 
-== Utilisation pour SEAPATH
-- Évaluation des vulnérabilités présentes
-- En CI : génération de rapports, test des seuils
+== Utilisation et amélioration pour SEAPATH
+#slide(composer: (1.2fr, auto))[
+  - Évaluation des vulnérabilités présentes
+  - En CI : génération de rapports, test des seuils
+
+  => Contributions :
+
+  - *Correction de bugs*
+
+  //  - e.g. fuite de données entre variants
+
+  - Ajout de *fonctionnalités manquantes*, e.g. :
+
+    - Commandes pour réinitialiser la BDD dans la CI
+
+    - Chargement de champs SPDX supplémentaires
+][
+  #let data = csv("vulnscout-commits.csv", row-type: array).slice(1)
+  #figure(
+    lq.diagram(
+      lq.bar(
+        data.map(x => {
+          let date-arr = x.at(0).split("-").map(int)
+          return datetime(year: date-arr.at(0), month: date-arr.at(1), day: date-arr.at(2))
+        }),
+        data.map(x => int(x.at(1))),
+      ),
+      xaxis: (
+        offset: none,
+        //      label: [Semaines],
+      ),
+      yaxis: (
+        label: [\# commits],
+      ),
+      width: 10cm,
+      height: 5cm,
+      // aspect-ratio: 1,
+    ),
+    caption: [Contributions à VulnScout\ par semaine],
+  )
+]
+
+== Amélioration de la qualité de code
+*Pas de typage* dans le backend = difficile de faire évoluer le code
+
+*Pratiques mises en place* :
+- nouveau code écrit "propre"
+- *revue des Pull Requests* avec attention particulière
+
+#speaker-note[
+  Dette technique
+
+  Pression d'ajout de nouvelles fonctionnalités
+
+  Peu de temps accordé à l'amélioration de l'ancien code dans les sprints
+]
+
+#pause
+#figure(
+  {
+    set par(justify: false)
+    table(
+      columns: (auto, auto, ..(1fr,) * 4),
+      align: center + horizon,
+      inset: 0.5em,
+      fill: (x, y) => if y == 2 { red.lighten(85%) } else if y == 3 { blue.lighten(85%) } else { none },
+      table.header(
+        table.cell(rowspan: 2, inset: 1em)[*Version*],
+        table.cell(rowspan: 2)[Lignes\ de code],
+        table.cell(colspan: 2)[*mypy*],
+        table.cell(colspan: 2)[*Pyright*],
+        [Imprécision],
+        [Fichiers erronés],
+        [Exhaustivité du typage],
+        [Symboles avec types connus],
+      ),
+      [0.10], [6214], [37,51 %],
+      [8 / 43], [32,9  %], [156 / #(156 + 274)],
+      [0.15], [18630], [34,97%],
+      [7 / 99], [34,5 %], [316 / #(316 + 545)],
+    )
+  },
+  caption: [Évolution des indicateurs de qualité du typage du backend au cours du stage],
+) <fig:vulnscout:quality:typing-table>
 
 = Conclusion
 - SEAPATH Yocto :
@@ -761,7 +862,7 @@ _cve-check_ *très limité* (NVD incomplète)
 - VulnScout :
   - *Contributions* pour résoudre problèmes lors de l'utilisation
   - Amélioration de la *qualité du code*
-  - *Comparaison* avec outil concurrent
+//  - *Comparaison* avec outil concurrent
 
 #speaker-note[
   Plan personnel :
