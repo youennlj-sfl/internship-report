@@ -151,6 +151,7 @@ Fin du plan
     show-notes-on-second-screen: if is-preview { none } else { right },
   ),
 )
+#set text(size: 20pt)
 
 #import "@preview/fletcher:0.5.8"
 #let fletcher-diagram = touying-reduce.with(fletcher)
@@ -470,7 +471,7 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
   inset: 0.5em,
   [Base de donnée\ \\ approche],
   [*NVD* @nist-nvd\ (NIST)],
-  [*CVE#emoji.tm Program* \ @cvelistv5],
+  [*CVE Program* \ @cvelistv5],
   [*Noyau Linux*\ @linux-vulns],
   [*Distributions*\ (Debian, RedHat...)],
 
@@ -488,7 +489,7 @@ _cve-check_ *très limité* (NVD incomplète)
 #pause
 
 => _meta-vulnscout_
-- rajoute *2 bases* (CVE#emoji.tm et noyau Linux)
+- rajoute *2 bases* (CVE et noyau Linux)
 - filtre *vulnérabilités du noyau non applicables*
 
 == Évaluation des approches
@@ -689,23 +690,59 @@ _cve-check_ *très limité* (NVD incomplète)
 ]
 
 = Détection de vulnérabilités sur SEAPATH Debian
-#meander.reflow({
-  import meander: *
+#slide(composer: 2)[
+  - Autre version de SEAPATH basée sur la distribution Debian @debian
 
-  placed(top + right, figure(image("../assets/Debian_logo.png", width: 6cm)))
+  - Projet FAI @fai-project-homepage pour automatiser image disque :
+    - liste de paquets
+    - configuration
+    - scripts
 
-  container()
+  #figure(align(left, image("../assets/Debian_logo.png", width: 4cm)))
+][
+  #pause
+  #utils.fit-to-height(figure(
+    image("../assets/debian_generate_flowchart.svg"),
+    caption: [Génération de la version Debian],
+  ))
+]
+== Méthodologie de détection
+#slide(composer: (1fr, 4cm))[
+  - Pas construit depuis les sources => autre approche pour SBOM
 
-  content[
-    - Autre version de SEAPATH basée sur la distribution Debian @debian
+    - *scanner le système de fichiers* pour trouver programmes, librairies, etc. : utilisation de *Syft*
 
-    - Moins complexe
-  ]
-})
+    - À intégrer dans le processus FAI
+
+  #pause
+  - *Détection des vulnérabilités* depuis le SBOM avec *Grype*
+
+  #pause
+  - *Intégration en CI*
+    - *rapports* (comme version Yocto)
+][
+  #meanwhile
+  #figure(image("../assets/syft-logo-name.png", width: 100%))
+  #pause
+  #figure(image("../assets/grype-logo-name.png", width: 90%))
+]
 
 = VulnScout
-==
+== Contexte du projet
+- Créé en mai 2024 (PFE d'un étudiant de l'INSA CVL)
 
+- Open source, maintenu par une équipe de Savoir-faire Linux Montréal
+
+- Application web :
+  - Front-end TypeScript / React @react-repo
+
+  - Back-end Python / Flask @flask-manual
+
+  - Données stockées dans une BDD relationnelle
+
+== Utilisation pour SEAPATH
+- Évaluation des vulnérabilités présentes
+- En CI : génération de rapports, test des seuils
 
 = Conclusion
 - SEAPATH Yocto :
@@ -713,13 +750,14 @@ _cve-check_ *très limité* (NVD incomplète)
   - *Implémentation* de la meilleure solution
   - *Ré-écriture de l'intégration continue* dans GitHub Actions
   - *Automatisation* de la détection
-
+#pause
 - SEAPATH Debian :
   - *Implémentation* d'une solution de détection de vulnérabilités
   - Ajout dans l'*intégration continue*
 
 - _À faire_ : seuils, décider quoi faire des vulnérabilités détectées
 
+#pause
 - VulnScout :
   - *Contributions* pour résoudre problèmes lors de l'utilisation
   - Amélioration de la *qualité du code*
