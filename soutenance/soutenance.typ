@@ -157,9 +157,14 @@ Fin du plan
       image("../assets/lfenergy-seapath-logo-color.svg", width: 60%),
     ),
   )),
-  subtitle: text(size: 24pt)[
+  subtitle: pad(top: -0.5cm, text(size: 24pt)[
     Maintien en condition de sécurité de #box[LF Energy SEAPATH]
-  ],
+
+    #text(size: 18pt, pad(top: 0.7cm, left: 2cm, right: -12cm)[
+      Supervisé par Erwann Roussy #h(2cm) 2026-06-17 - Barbara Fila, Gildas Avoine
+    ])
+
+  ]),
   insa: "rennes",
   text-size: 20pt,
   config-page(
@@ -171,7 +176,7 @@ Fin du plan
     show-notes-on-second-screen: if is-preview { none } else { right },
   ),
 )
-#set text(size: 20pt)
+//#set text(size: 20pt)
 
 #import "@preview/fletcher:0.5.8"
 #let fletcher-diagram = touying-reduce.with(fletcher)
@@ -222,6 +227,8 @@ Fin du plan
   figure(image("../assets/seapath_technology_stack.png"), caption: [Architecture générale de SEAPATH]),
   align(horizon)[
     #sym.approx Distribution Linux : Assemblage de nombreux composants logiciels.
+
+    #speaker-note[Composants *open source*]
 
     #text(size: 1.2em, weight: "extrabold")[Quelles vulnérabilités ?]
 
@@ -822,24 +829,25 @@ _cve-check_ *très limité* (NVD incomplète)
   {
     set par(justify: false)
     table(
-      columns: (auto, auto, ..(1fr,) * 4),
+      columns: (auto, auto, ..(1fr,) * 3),
       align: center + horizon,
       inset: 0.5em,
       fill: (x, y) => if y == 2 { red.lighten(85%) } else if y == 3 { blue.lighten(85%) } else { none },
       table.header(
         table.cell(rowspan: 2, inset: 1em)[*Version*],
         table.cell(rowspan: 2)[Lignes\ de code],
-        table.cell(colspan: 2)[*mypy*],
+        table.cell(colspan: 1)[*mypy*],
         table.cell(colspan: 2)[*Pyright*],
         [Imprécision],
-        [Fichiers erronés],
         [Exhaustivité du typage],
         [Symboles avec types connus],
       ),
       [0.10], [6214], [37,51 %],
-      [8 / 43], [32,9  %], [156 / #(156 + 274)],
-      [0.15], [18630], [34,97%],
-      [7 / 99], [34,5 %], [316 / #(316 + 545)],
+      [32,9  %], [156 / #(156 + 274)],
+      // no folding
+      [0.17-a], [20391], [30,56%],
+      [45,3 %], [469 / #(469 + 528)],
+      // no folding
     )
   },
   caption: [Évolution des indicateurs de qualité du typage du backend au cours du stage],
