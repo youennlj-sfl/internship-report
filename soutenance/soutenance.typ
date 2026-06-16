@@ -177,7 +177,7 @@ Fin du plan
   config-common(
     //show-bibliography-as-footnote: bibliography("bibliography.yml"),
     // footnotes are too big
-    show-notes-on-second-screen: if false and is-preview { none } else { right },
+    show-notes-on-second-screen: if is-preview { none } else { right },
   ),
 )
 //#set text(size: 20pt)
@@ -529,10 +529,10 @@ _cve-check_ *très limité* (NVD incomplète)
   placed(top + right, figure(table(
     columns: 3,
     inset: 0.5em,
-    [], [Vuln.\ trouvée], [Vuln.\ applicable],
-    [Faux positif], [#sym.checkmark], [#sym.crossmark],
-    [Faux négatif], [#sym.crossmark], [#sym.checkmark],
-  ))) // TOOD revoir tableau
+    [Vuln.\ trouvée], [Vuln.\ applicable], table.cell(stroke: (top: none, right: none))[],
+    [#sym.checkmark], [#sym.crossmark], [*Faux positif*],
+    [#sym.crossmark], [#sym.checkmark], [*Faux négatif*],
+  )))
 
   container()
 
@@ -632,6 +632,10 @@ _cve-check_ *très limité* (NVD incomplète)
   #pause
   #v(2em)
   - Reste \~15 vulnérabilités : majorité *faux positifs*
+
+  #speaker-note[
+    EPSS: machine learning, proba exploité dans les 30 jours. data: âge de la vuln, listée sur des sites d'exploit, code d'exploit dispo, présent dans outils de sécu offensive...
+  ]
 ]
 
 == Correction des faux positifs
