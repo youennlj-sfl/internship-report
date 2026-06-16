@@ -117,8 +117,8 @@ Fin du plan
   comment-color: blue.lighten(93%),
 )
 #show: zebraw-init.with(
-  numbering-separator: false,
-  numbering: false,
+  numbering-separator: true,
+  numbering: true,
   hanging-indent: true,
   comment-color: blue.lighten(85%),
   ..zebra-theme,
@@ -186,9 +186,10 @@ Fin du plan
 == Le réseau électrique en transformation
 - Consommation d'énergies renouvelables +65% en France en 11 ans @sdes-2025
   - Besoin de *repenser gestion du réseau électrique* : _smart grids_
+#pause
 #figure(
-  image("../assets/Electrical_substation_model_(side-view).png", height: 30%),
-  caption: [Vue en coupe d'un *poste électrique*],
+  image("../assets/poste-transfo-photo.jpg", height: 40%),
+  caption: [Photographie d'un *poste électrique*],
 )
 - Nombreux équipements : disjoncteurs, transformateurs, etc.
 - Contrôlés par des _Intelligent Electronic Devices_ (IEDs)
@@ -196,7 +197,8 @@ Fin du plan
 
 == Place de SEAPATH @seapath
 #slide(composer: (1fr, 1.5fr))[
-  Hyperviseur :
+  Système d'exploitation :
+  - pour VMs (*hyperviseur*)
   - héberge des *IEDs virtuels*
 
   Contraintes :
@@ -206,7 +208,7 @@ Fin du plan
   Ouvert :
   - *open source*\ co-mainteneurs :
     - Savoir-faire Linux
-    - RTE International
+    - RTE
   - basé sur le noyau Linux
 ][
   #let cropped-img = box(
@@ -293,7 +295,7 @@ Problème : SEAPATH #sym.approx distribution Linux : *centaines de composants*
 
 #pause
 #v(1em)
-Notre approche : utiliser les *bases de données de vulnérabilités*
+Notre approche : utiliser les *bases de données de vulnérabilités* (BDD)
 
 - besoin de liste des composants présents = *SBOM*
 - à faire générer avec SEAPATH
@@ -319,7 +321,7 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
         height: 3cm,
         stroke: 2pt,
         fill: insa-colors.secondary.lighten(80%),
-      )[Mise en correspondance avec BDD#footnote[BDD : Base de données]]
+      )[Mise en correspondance avec BDD]
       edge("-|>")
       node((4, 0), width: 5cm, height: 3cm)[Filtrage des vulnérabilités (heuristiques)]
     },
@@ -334,14 +336,9 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
 ]
 
 == Les SBOMs
-#v(-1.5em)
-#text(size: 0.92em, quote(
-  block: true,
-  attribution: [UE 2024/2847],
-)[_Source Bills of Materials_ / Nomenclatures Logicielles : Document contenant les *détails* et les *relations* avec la chaîne d’approvisionnement des différents *composants* utilisés dans la fabrication d’un produit comportant des éléments numériques.])
-
+#v(2em)
 #cols(columns: (1fr, auto))[
-  - Requis par les futures législations (CRA @cra-article)
+  //- Requis par les futures législations (CRA @cra-article)
 
   - Contenu :
     - *composants* : nom, versions, licences, etc.
@@ -365,6 +362,8 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
 ]
 
 #speaker-note[
+  Requis CRA
+
   Dire que le contenu est très utile pour détecter vulnérabilités (identifiants composants)
 
   Fichiers JSON trop verbeux pour être montré ici (ouverture)
@@ -428,8 +427,8 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
   columns: (1fr, 4cm),
 )[
   - Approches utilisant les SBOMs :
-    - *Grype* @grype-in-production : scanneur orienté distributions et conteneurs
-    - *sbom-cve-check* @sbom-cve-check : détecteur orienté Yocto
+    - *Grype* @grype-in-production : scanneur *orienté distributions* et conteneurs
+    - *sbom-cve-check* @sbom-cve-check : détecteur *orienté Yocto*
 
   #pause
   #figure(
@@ -459,7 +458,7 @@ Notre approche : utiliser les *bases de données de vulnérabilités*
 #pause
 
 - Approche sans SBOMs : *_cve-check_*, classe pré-faite de Yocto
-  - cherche les vulnérabilités lors de la construction de l'image
+  - cherche les vulnérabilités *lors de la construction* de l'image
 
 #pause
 #figure(
@@ -529,7 +528,7 @@ _cve-check_ *très limité* (NVD incomplète)
     [], [Vuln.\ trouvée], [Vuln.\ applicable],
     [Faux positif], [#sym.checkmark], [#sym.crossmark],
     [Faux négatif], [#sym.crossmark], [#sym.checkmark],
-  )))
+  ))) // TOOD revoir tableau
 
   container()
 
@@ -537,14 +536,14 @@ _cve-check_ *très limité* (NVD incomplète)
     Critères :
     - *nombre total* de vulnérabilités trouvées
 
-    - taux de *faux positifs / faux négatifs*
+    - taux de *faux positifs / faux négatifs* // TODO peut-être virer et mettre non affecté/à évaluer
 
     - facilité d'utilisation / d'automatisation
     #v(1em)
     4 scénarios => comparaison des résultats :
     + *basique* : _cve-check_
     + *léger* : _cve-check_ + BDDs supplémentaires
-    + *complet* : _cve-check_ + BDDs supplémentaires + filtrage noyau
+    + *complet* : _cve-check_ + BDDs supplémentaires + filtrage noyau (_meta-vulnscout_)
     + *externe* : SBOM #sym.arrow _sbom-cve-check_
   ]
 })
@@ -578,15 +577,15 @@ _cve-check_ *très limité* (NVD incomplète)
   - Beaucoup de _non affecté_ (jaune) = mieux
   - Peu de _à évaluer_ (rouge) = mieux
 ][
-  #pause
   Principale différence = filtre sur *vulnérabilités noyau* :
   - -20% léger => complet
   - -58% complet => externe
 
-  Résultats:
+  #pause
+  Résultats :
   - _cve-check_ basique : peu performant
     - beaucoup de faux négatifs
-  - _cve-check_ + meta-seapath : mieux
+  - _cve-check_ + meta-vulnscout : mieux
     - faux positifs
   - *_sbom-cve-check_ : le meilleur*
     - facile d'utilisation
@@ -598,7 +597,9 @@ _cve-check_ *très limité* (NVD incomplète)
   => tout détaillé dans un *rapport*
 
   #speaker-note[
-    Rapport => utile pour chiffrer offres client
+    Rapport :
+    - utile pour chiffrer offres client
+    - estimer le nombre de vulns à évaluer
   ]
 ]
 
@@ -619,6 +620,8 @@ _cve-check_ *très limité* (NVD incomplète)
   $
 
   #speaker-note[
+    Présenter VulnScout ici : pas d'outil open source pour évaluer CVEs avant
+
     Choix fait avec tuteur + concertation avec qqun qui s'y connaît + sera ré-étudié lors du comité de pilotage technique (R&D pour le moment)
   ]
 
@@ -639,6 +642,7 @@ _cve-check_ *très limité* (NVD incomplète)
       CVE_STATUS[CVE-2018-6764] = "fixed-version: Fixed in 4.1.0, NVD tracks this as version-less vulnerability"
       # ...et plein d'autres
       ```,
+      numbering: false,
     ),
     caption: [Annotations de vulnérabilités],
   ) <fig:yocto:analysis:cve_status>
@@ -879,6 +883,8 @@ _cve-check_ *très limité* (NVD incomplète)
   - intégré à une équipe de haute compétence
 ]
 
+#section-slide(add-heading: false)[Merci de votre écoute !]
+
 /*
 
 Slide 9 — Implémentation SEAPATH Debian (2:00)
@@ -916,11 +922,191 @@ Annexes / Slides de secours (non comptées dans le temps principal)
 #set text(size: 16pt)
 #bibliography("../bibliography.yml")
 
-== Intégration Continue : Synchronisation entre dépôts
+= Annexes
+== Synchronisation de la CI entre dépôts
 #figure(
-  image("../assets/yocto-ci-full.svg", width: 18cm),
+  image("../assets/yocto-ci-full.svg", width: 24cm),
   caption: [Relations entre les pipelines de CI de SEAPATH Yocto],
 )
 
-== SPDX
-#highlight[TODO: spdx extract]
+== Extrait de fichier SPDX
+
+#zebraw(
+  ```json
+      {
+        "type": "software_Package",
+        "software_packageVersion": "20.2.1",
+        "name": "ceph",
+        "summary": "User space components of the Ceph file system"
+        "description": "User space components of the Ceph file system.",
+        "externalIdentifier": [{"identifier": "pkg:yocto/meta-seapath/ceph@20.2.1"}, {"identifier": "cpe:2.3:*:*:ceph_storage_osd:20.2.1:*:*:*:*:*:*:*"}, ...],
+      },
+      {
+        "type": "software_File",
+        "name": "usr/lib/ceph/erasure-code/libec_clay.so",
+        "verifiedUsing": [{"algorithm": "sha256", "hashValue": "0a323c42c25bf33d08334ac7cd2dda1b10b734f5f07714f9185c6a48db8feee4"}]
+      },
+      {
+        "type": "software_File",
+        "software_primaryPurpose": "source",
+        "name": "sources/linux-mainline-rt-6.12.89-rt18+git/drivers/net/ipa/data/ipa_data-v5.5.c",
+        "verifiedUsing": ...
+      },
+  ```,
+)
+
+== VulnScout CI
+#slide[
+  #show raw: set text(14pt)
+  #zebraw(
+    ```bash
+    for variant in "host_standalone_efi" "guest_efi" ...; do
+      vulnscout \
+        --name "seapath" \
+        --variant "$variant" \
+        --add-spdx "./$variant/sbom-cve-checked.spdx.json"
+    done
+
+    vulnscout \
+      --report "summary.adoc" \
+      --report "vulnerabilities.csv"
+
+    vulnscout \
+      --match-condition \
+        "not ignored and not fixed and (cvss >= 9.0 or (cvss >= 7.0 and epss >= 50%))" \
+      --report "failed-vulnerabilities.txt"
+    ```,
+  )
+]
+
+== Base de données de VulnScout
+#figure(
+  image("../assets/erd 2.png", height: 85%),
+  caption: [Modèle entité-association de la base de données de VulnScout],
+)
+
+== CI SEAPATH Yocto
+#import "@preview/subpar:0.2.2"
+#subpar.grid(
+  figure(
+    pad(
+      scale(80%, fletcher.diagram(node-stroke: 1pt, node-outset: 0pt, node-inset: .7em, spacing: 2em, debug: false, {
+        import fletcher: edge, node, shapes
+        let termination = (shape: shapes.pill, fill: color.red.desaturate(50%))
+        let process = (shape: shapes.rect, fill: color.aqua.desaturate(50%))
+
+        node((0, 0), ..termination)[Début de la CI]
+        edge("-|>")
+        node((1, 0), ..process)[Récupérer les\ sources]
+        edge("-|>")
+        node((1, 1), ..process)[Initialiser\ l'environnement]
+        edge("-|>")
+        node((1, 2), ..process)[Construire les\ variantes 1, 2, 3, 4]
+        edge("-|>")
+        node((0, 2), ..termination)[Fin de la CI]
+      })),
+      y: 0.65em,
+    ),
+    caption: [Pipeline pré-existant],
+  ),
+  <fig:yocto:ci:build-jenkins>,
+
+  figure(
+    scale(80%, fletcher.diagram(node-stroke: 1pt, node-outset: 0pt, node-inset: .7em, spacing: 2em, debug: false, {
+      import fletcher: edge, node, shapes
+      let termination = (shape: shapes.pill, fill: color.red.desaturate(50%))
+      let loop = (shape: shapes.hexagon, fill: color.orange.desaturate(50%))
+      let process = (shape: shapes.rect, fill: color.aqua.desaturate(50%))
+
+      node((0, 0), ..termination)[Début de la CI]
+      edge("-|>")
+      node((0, 1), name: <loop>, ..loop, pad(0pt)[Pour chaque\ `variante`])
+
+      edge("-|>", <build-wf>)
+      node(enclose: (<fetch>, <init>, <build>), stroke: (dash: "dashed"), snap: -1, name: <build-wf>)
+      node((1, 0), name: <fetch>, ..process)[Récupérer les\ sources]
+      edge("-|>")
+      node((1, 1), name: <init>, ..process)[Initialiser\ l'environnement]
+      edge("-|>")
+      node((1, 2), name: <build>, ..process)[Construire\ `variant`]
+
+      edge(<loop>, <end>, "-|>")
+      node((0, 2), name: <end>, ..termination)[Fin de la CI]
+    })),
+    caption: [Nouveau pipeline `build`],
+  ),
+  <fig:yocto:ci:build-gh>,
+
+  columns: 2,
+  gap: 1em,
+  align: horizon,
+  supplement: "Figure",
+  caption: [Évolution de l'architecture du pipeline de construction des images],
+)
+
+== Arborescence de SEAPATH Yocto
+#figure(
+  block(
+    zebraw(
+      ```
+      .
+      ├── .cqfd
+      │   └── docker
+      ├── .github
+      │   └── workflows
+      ├── tools
+      │   ├── demo_setup
+      │   └── deploy_vm
+      ├── .repo
+      │   ├── ...
+      │   └── manifests
+      └── sources
+          ├── bitbake
+          ├── meta-yocto
+          ├── meta-intel
+          ├── ...
+          └── meta-seapath
+      ```,
+      hanging-indent: false,
+      highlight-lines: (
+        ..range(2, 8 + 1),
+        (8, [Contenu du dépôt _yocto-bsp_ @SEAPATH-git-yocto-bsp]),
+        (11, [Dépôt _repo-manifest_ @SEAPATH-git-repo-manifest]),
+        ..range(13, 16 + 1).map(x => (x, color.purple.lighten(82%))),
+        (16, [Dépendances de SEAPATH]),
+        (17, [Dépôt _meta-seapath_ @SEAPATH-git-meta-seapath]),
+      ),
+    ),
+    width: 50%,
+  ),
+)
+
+== SEAPATH Yocto - SBOM
+#slide[
+  #show raw: set text(16pt)
+  #v(1fr)
+  #figure(
+    zebraw(
+      ```BitBake
+      inherit create-spdx-2.2
+      inherit vex
+
+      SPDX_INCLUDE_COMPILED_SOURCES:pn-linux-mainline-rt = "1"
+      ```,
+    ),
+    caption: [Paramètres pour générer les fichiers nécessaires à la détection de vulnérabilités],
+  )
+  #v(1fr)
+  #figure(
+    zebraw(
+      ```ini
+      # This allows to get the debug symbols of the kernel and know which files have been compiled. It has been pulled from https://git.yoctoproject.org/yocto-kernel-cache/tree/features/debug/debug-kernel.cfg?h=yocto-6.12
+      CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+      CONFIG_DEBUG_INFO=y
+      ```,
+      lang: false,
+    ),
+    caption: [Fichier de configuration rajouté à la recette du noyau Linux],
+  )
+  #v(1fr)
+]
