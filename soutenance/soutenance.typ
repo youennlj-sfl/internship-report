@@ -146,6 +146,10 @@ Fin du plan
 )
 #show lq.selector(lq.diagram): set text(18pt)
 
+#let speaker-note = speaker-note.with(setting: it => {
+  box(fill: red.lighten(85%), inset: .6em, text(fill: red.darken(50%), size: 28pt, it))
+})
+
 #show: insa-slides.with(
   title: "Soutenance de PFE",
   title-visual: pad(top: 155pt, left: -20pt, block(
@@ -173,7 +177,7 @@ Fin du plan
   config-common(
     //show-bibliography-as-footnote: bibliography("bibliography.yml"),
     // footnotes are too big
-    show-notes-on-second-screen: if is-preview { none } else { right },
+    show-notes-on-second-screen: if false and is-preview { none } else { right },
   ),
 )
 //#set text(size: 20pt)
